@@ -75,3 +75,45 @@ export const createAccount = async (req, res) => {
     process.exit(1);
   }
 };
+
+export const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    if (!email.trim() || !password.trim()) {
+      return res
+        .status(400)
+        .json({ error: true, message: "All Fields are required!" });
+    }
+    const user = await userModel.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({ error: true, message: "User not found!" });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(400).json({ message: "Invalid Credentials!" });
+    }
+
+    const accessToken = jwt.sign(
+      { userId: user._id },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: "5h" },
+    );
+
+    return res.status(400).json({
+      error: false,
+      message: "Login Successfull!",
+      user: { fullName: user.fullName, email: user.email },
+      accessToken,
+    });
+  } catch (error) {
+    console.log("Error in createAccount function!", error);
+    return res.status(400).json({
+      error: true,
+      message: "Error on Server",
+    });
+    process.exit(1);
+  }
+};
