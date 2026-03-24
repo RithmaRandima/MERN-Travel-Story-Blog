@@ -1,6 +1,7 @@
 import express from "express";
 import {
   addStory,
+  deleteStroy,
   EditStory,
   getAllStory,
 } from "../controllers/postController.js";
@@ -27,5 +28,15 @@ postRoute.post(
   upload.single("image"),
   EditStory,
 );
+
+// Delete Story
+postRoute.delete(
+  "/delete-story/:id",
+  authenticateToken,
+  upload.single("image"),
+  deleteStroy,
+);
+
+postRoute.put("/update-favourite/:id", authenticateToken, deleteStroy);
 
 export default postRoute;

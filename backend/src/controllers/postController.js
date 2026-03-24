@@ -61,7 +61,7 @@ export const getAllStory = async (req, res) => {
   }
 };
 
-// edit travel Strory
+// Edit Travel Strory
 export const EditStory = async (req, res) => {
   const { id } = req.params;
   const { userId } = req.user;
@@ -115,6 +115,63 @@ export const EditStory = async (req, res) => {
     });
   } catch (error) {
     console.log("Error in EditStory function:", error);
+    res.status(500).json({ error: true, message: "Internal server error" });
+  }
+};
+
+// Delete Travel Story
+export const deleteStroy = async (req, res) => {
+  const { id } = req.params;
+  const { userId } = req.user;
+
+  try {
+    const travelStory = await postModel.findOne({ _id: id, userId: userId });
+
+    if (!travelStory) {
+      return res
+        .status(404)
+        .json({ error: true, message: "Travel story not found!" });
+    }
+
+    // Delete image file
+    fs.unlink(path.join("uploads", travelStory.image), (err) => {
+      if (err) console.log("Error deleting image:", err);
+    });
+
+    // Delete story from DB
+    await postModel.findByIdAndDelete(id);
+
+    res.status(200).json({ success: true, message: "Travel story deleted!" });
+  } catch (error) {
+    console.log("Error in DeleteStory function:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+// change Favourite Status
+export const updateFavouriteStatus = async (req, res) => {
+  const { id } = req.params;
+  const { isFavourite } = req.body;
+  const { userId } = req.user;
+
+  try {
+    const travelStory = await postModel.findOne({ _id: id, userId: userId });
+    if (!travelStory) {
+      return res
+        .status(404)
+        .json({ error: true, message: "Travel story not found!" });
+    }
+
+    travelStory.isFavourite = isFavourite;
+
+    await travelStory.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Update Successful",
+      story: travelStory,
+    });
+  } catch (error) {
+    console.log("Error in updateFavouriteStatus function:", error);
     res.status(500).json({ error: true, message: "Internal server error" });
   }
 };
