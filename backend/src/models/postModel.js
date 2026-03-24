@@ -8,8 +8,8 @@ const postSchema = new Schema(
     visitedLocation: { type: [String], default: [] },
     isFavourite: { type: Boolean, default: false },
     userId: { type: Schema.Types.ObjectId, ref: "user", required: true },
-    imageUrl: { type: String, required: true },
-    VisitedData: { type: Date, required: true }, // fixed from Data → Date
+    image: { type: String, required: true },
+    VisitedDate: { type: Date, required: true }, // fixed from Data → Date
   },
   { timestamps: true },
 );
