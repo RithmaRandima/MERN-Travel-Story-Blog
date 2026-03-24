@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import validator from "validator";
 
+// create Account
 export const createAccount = async (req, res) => {
   const { fullName, email, password } = req.body;
   try {
@@ -76,6 +77,7 @@ export const createAccount = async (req, res) => {
   }
 };
 
+// Login User
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
@@ -116,4 +118,18 @@ export const loginUser = async (req, res) => {
     });
     process.exit(1);
   }
+};
+
+// get User
+export const getUser = async (req, res) => {
+  const { userId } = req.user;
+
+  const isUser = await userModel.findOne({ _id: userId });
+  if (!isUser) {
+    return res.sendStatus(401);
+  }
+  return res.json({
+    user: isUser,
+    message: "",
+  });
 };
