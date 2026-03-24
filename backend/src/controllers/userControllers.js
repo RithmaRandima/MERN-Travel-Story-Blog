@@ -68,11 +68,11 @@ export const createAccount = async (req, res) => {
       message: "Registration Successfull!",
     });
   } catch (error) {
-    console.log("Error in createAccount function!", error);
-    return res.status(400).json({
+    res.status(400).json({
       error: true,
       message: "Error on Server",
     });
+    console.log("Error in createAccount function!", error);
     process.exit(1);
   }
 };
@@ -111,11 +111,11 @@ export const loginUser = async (req, res) => {
       accessToken,
     });
   } catch (error) {
-    console.log("Error in createAccount function!", error);
-    return res.status(400).json({
+    res.status(400).json({
       error: true,
       message: "Error on Server",
     });
+    console.log("Error in createAccount function!", error);
     process.exit(1);
   }
 };
