@@ -7,10 +7,8 @@ import validator from "validator";
 export const createAccount = async (req, res) => {
   const { fullName, email, password } = req.body;
   try {
-    if (!fullName.trim() || !email.trim() || !password.trim()) {
-      return res
-        .status(400)
-        .json({ error: true, message: "All Fields are required!" });
+    if (!fullName?.trim() || !email?.trim() || !password?.trim()) {
+      return res.status(400).json({ message: "All fields required" });
     }
 
     const existsUser = await userModel.findOne({ email });
@@ -73,7 +71,6 @@ export const createAccount = async (req, res) => {
       message: "Error on Server",
     });
     console.log("Error in createAccount function!", error);
-    process.exit(1);
   }
 };
 
