@@ -147,11 +147,16 @@ export const deleteStroy = async (req, res) => {
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
+
 // change Favourite Status
 export const updateFavouriteStatus = async (req, res) => {
   const { id } = req.params;
   const { isFavourite } = req.body;
   const { userId } = req.user;
+
+  // 🔥 Add these logs here
+  console.log("Story ID:", id);
+  console.log("User ID from token:", userId);
 
   try {
     const travelStory = await postModel.findOne({ _id: id, userId: userId });
@@ -160,6 +165,8 @@ export const updateFavouriteStatus = async (req, res) => {
         .status(404)
         .json({ error: true, message: "Travel story not found!" });
     }
+    console.log(travelStory);
+    console.log("------------------");
 
     travelStory.isFavourite = isFavourite;
 
@@ -170,6 +177,7 @@ export const updateFavouriteStatus = async (req, res) => {
       message: "Update Successful",
       story: travelStory,
     });
+    console.log(travelStory);
   } catch (error) {
     console.log("Error in updateFavouriteStatus function:", error);
     res.status(500).json({ error: true, message: "Internal server error" });

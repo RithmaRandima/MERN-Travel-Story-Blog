@@ -4,6 +4,7 @@ import {
   deleteStroy,
   EditStory,
   getAllStory,
+  updateFavouriteStatus,
 } from "../controllers/postController.js";
 import { authenticateToken } from "../utilities/utilities.js";
 import upload from "../utilities/multerConfig.js";
@@ -37,6 +38,11 @@ postRoute.delete(
   deleteStroy,
 );
 
-postRoute.put("/update-favourite/:id", authenticateToken, deleteStroy);
+// update favourite
+postRoute.put(
+  "/update-favourite/:id",
+  authenticateToken,
+  updateFavouriteStatus,
+);
 
 export default postRoute;
