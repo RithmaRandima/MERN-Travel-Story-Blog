@@ -104,7 +104,7 @@ export const loginUser = async (req, res) => {
       { expiresIn: "5h" },
     );
 
-    return res.status(400).json({
+    return res.status(200).json({
       error: false,
       message: "Login Successfull!",
       user: { fullName: user.fullName, email: user.email },
