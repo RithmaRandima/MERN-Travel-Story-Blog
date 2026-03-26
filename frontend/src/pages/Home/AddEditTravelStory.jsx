@@ -1,24 +1,31 @@
 import React, { useState } from "react";
 import { MdAdd, MdClose, MdDeleteOutline, MdUpdate } from "react-icons/md";
-import DateSelector from "./DateSelector";
-import ImageSelector from "./ImageSelector";
-import TagInput from "./TagInput";
-import axiosInstance from "../utils/axiosinstance";
+import DateSelector from "../../components/DateSelector";
+import ImageSelector from "../../components/ImageSelector";
+import TagInput from "../../components/TagInput";
+import axiosInstance from "../../utils/axiosinstance";
 import moment from "moment";
 import { toast } from "react-toastify";
 
 const AddEditTravelStory = ({
+  url,
   storyInfo,
   type,
   onClose,
   getAllTravelStories,
 }) => {
   // input fields
-  const [title, setTitle] = useState("");
-  const [storyImg, setStoryImg] = useState(null);
-  const [story, setStory] = useState("");
-  const [visitedLocation, setvisitedLocation] = useState([]);
-  const [visitedDate, setVisitedDate] = useState(null);
+  const [title, setTitle] = useState(storyInfo?.title || "");
+  const [storyImg, setStoryImg] = useState(
+    storyInfo?.image ? `${url}/images/${storyInfo.image}` : null,
+  );
+  const [story, setStory] = useState(storyInfo?.story || "");
+  const [visitedLocation, setvisitedLocation] = useState(
+    storyInfo?.visitedLocation || [],
+  );
+  const [visitedDate, setVisitedDate] = useState(
+    storyInfo?.visitedDate || null,
+  );
 
   // window configs
   const [error, setError] = useState("");
@@ -36,14 +43,6 @@ const AddEditTravelStory = ({
         visitedDate ? moment(visitedDate).valueOf() : moment().valueOf(),
       );
 
-      console.log("Input Data: ", {
-        title,
-        storyImg,
-        story,
-        visitedLocation,
-        visitedDate,
-      });
-
       const response = await axiosInstance.post(
         `/api/post/add-story`,
         formData,
@@ -60,13 +59,47 @@ const AddEditTravelStory = ({
         onClose();
       }
     } catch (error) {
-      toast.error("Error adding food");
+      toast.error("Error Creating Story");
       console.log(error);
     }
   };
 
   // update Travel Story
-  const updateTravelStory = async () => {};
+  const updateTravelStory = async () => {
+    const storyId = storyInfo._id;
+    try {
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("story", story);
+      formData.append("visitedLocation", visitedLocation);
+      if (storyImg instanceof File) {
+        formData.append("image", storyImg);
+      }
+      formData.append(
+        "VisitedDate",
+        visitedDate ? moment(visitedDate).valueOf() : moment().valueOf(),
+      );
+
+      const response = await axiosInstance.post(
+        `/api/post/edit-story/${storyId}`,
+        formData,
+      );
+      setTitle("");
+      setStory("");
+      setStoryImg(null);
+      setvisitedLocation([]);
+      setVisitedDate(null);
+
+      if (response.data && response.data.story) {
+        toast.success("Story Update Successfully");
+        getAllTravelStories();
+        onClose();
+      }
+    } catch (error) {
+      toast.error("Error Updating Story");
+      console.log(error);
+    }
+  };
 
   const handelAddOrUpdateClick = () => {
     console.log("Input Data: ", {
@@ -96,12 +129,13 @@ const AddEditTravelStory = ({
   };
 
   return (
-    <div>
+    <div className="relative">
       <div className="flex items-center justify-between">
+        {/*Title Section  */}
         <h5 className="text-xl font-medium text-slate-700">
           {type === "add" ? "Add Story" : "Update Story"}
         </h5>
-
+        {/* Tutton Section */}
         <div>
           <div className=" flex items-center gap-3 bg-cyan-50/50 p-2 rounded-l-lg">
             {type === "add" ? (
@@ -112,10 +146,6 @@ const AddEditTravelStory = ({
               <>
                 <button className="btn-small " onClick={handelAddOrUpdateClick}>
                   <MdUpdate className="text-xl" /> Update Story
-                </button>
-
-                <button className="btn-small btn-delete" onClick={onClose}>
-                  <MdDeleteOutline className="text-xl " /> Delete
                 </button>
               </>
             )}

@@ -2,7 +2,7 @@ import React from "react";
 import { FaHeart, FaMapLocation } from "react-icons/fa6";
 import moment from "moment"; // ✅ import moment
 
-const TravelStoryCard = ({ item, onEdit, onClick, onFavouriteClick, url }) => {
+const TravelStoryCard = ({ item, onClick, onFavouriteClick, url }) => {
   return (
     <div className="border rounded-lg overflow-hidden bg-white hover:shadow-lg transition-all ease-in-out relative cursor-pointer">
       <img
@@ -38,12 +38,13 @@ const TravelStoryCard = ({ item, onEdit, onClick, onFavouriteClick, url }) => {
         <p className="text-xs text-slate-600 mt-2">
           {item?.story.slice(0, 60)}
         </p>
+
         {/* places array */}
         <div className="flex flex-wrap gap-2 mt-3">
           {item.visitedLocation.map((place, index) => (
             <div
               key={index}
-              className="inline-flex items-center gap-1 text-[13px] text-cyan-600 bg-cyan-200/40 px-2 py-1 rounded"
+              className="inline-flex items-center gap-2 text-[13px] text-cyan-600 bg-cyan-200/40 px-2 py-1 rounded-full"
             >
               <FaMapLocation className="text-[18px] mr-1" />
               {place}

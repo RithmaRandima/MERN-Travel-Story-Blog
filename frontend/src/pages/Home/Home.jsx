@@ -6,17 +6,26 @@ import TravelStoryCard from "../../components/TravelStoryCard";
 import { toast } from "react-toastify";
 import { MdAdd } from "react-icons/md";
 import Modal from "react-modal";
-import AddEditTravelStory from "../../components/AddEditTravelStory";
+import AddEditTravelStory from "./AddEditTravelStory";
 import "react-day-picker/style.css";
+import ViewTravelStory from "./ViewTravelStory";
+import EmptyWindow from "./EmptyWindow";
+import { DayPicker } from "react-day-picker";
 
 const Home = () => {
   const navigate = useNavigate();
   const url = "http://localhost:5000";
   const [userInfo, setUserInfo] = useState(null);
   const [allStories, setAllStories] = useState([]);
+
   const [openAddEditModel, setOpenAddEditModel] = useState({
     isShown: false,
     type: "add",
+    data: null,
+  });
+
+  const [openViewModel, setopenViewModel] = useState({
+    isShown: false,
     data: null,
   });
 
@@ -49,10 +58,14 @@ const Home = () => {
   };
 
   // Handel Edit Story Click
-  const handelEdit = (data) => {};
+  const handelEdit = (data) => {
+    setOpenAddEditModel({ isShown: true, type: "edit", data: data });
+  };
 
   // Handel Travel Story Click
-  const handelViewStory = (data) => {};
+  const handelViewStory = (data) => {
+    setopenViewModel({ isShown: true, data });
+  };
 
   // Handel Update Favourite Click
   const updateIsFavourite = async (data) => {
@@ -80,6 +93,26 @@ const Home = () => {
     }
   };
 
+  // Handel Delete Story
+  const deleteTravelStory = async (data) => {
+    const storyId = data._id;
+
+    try {
+      const response = await axiosInstance.delete(
+        `${url}/api/post/delete-story/${storyId}`,
+      );
+
+      if (response.data && !response.data.error) {
+        toast.success("Story Delete Successfully");
+        setopenViewModel((prev) => ({ ...prev, isShown: false }));
+        getAllTravelStories();
+      }
+    } catch (error) {
+      toast.error("Error Creating Story");
+      console.log("Error on Deleting Story", error);
+    }
+  };
+
   useEffect(() => {
     getAllTravelStories();
     getUserInfo();
@@ -93,7 +126,7 @@ const Home = () => {
       <div className="container mx-auto py-10">
         <div className="flex gap-7">
           {/* Story Container */}
-          <div className="flex-1">
+          <div className="flex-1 pl-7">
             {allStories.length > 0 ? (
               <div className="grid grid-cols-2 gap-4">
                 {allStories.map((item) => {
@@ -102,7 +135,6 @@ const Home = () => {
                       key={item._id}
                       item={item}
                       url={url}
-                      onEdit={() => handelEdit(item)}
                       onClick={() => handelViewStory(item)}
                       onFavouriteClick={() => updateIsFavourite(item)}
                     />
@@ -110,12 +142,15 @@ const Home = () => {
                 })}
               </div>
             ) : (
-              <div></div>
+              <EmptyWindow />
             )}
           </div>
 
-          <div className="w-[320px]"></div>
-          {/*Add Edit Model */}
+          <div className="w-[320px] relative">
+            <div className="bg-red-200 w-[320px] fixed top-0 bottom-0">f</div>
+          </div>
+
+          {/*Add and Edit Travel Story Model */}
           <Modal
             isOpen={openAddEditModel.isShown}
             onRequestClose={() => {}}
@@ -129,8 +164,9 @@ const Home = () => {
             className="model-box"
           >
             <AddEditTravelStory
+              storyInfo={openAddEditModel.data || null}
               type={openAddEditModel.type}
-              storyInfo={openAddEditModel.data}
+              url={url}
               onClose={() => {
                 setOpenAddEditModel({
                   isShown: false,
@@ -142,9 +178,38 @@ const Home = () => {
             />
           </Modal>
 
+          {/* View Travel Story Model */}
+          <Modal
+            isOpen={openViewModel.isShown}
+            onRequestClose={() => {}}
+            style={{
+              overlay: {
+                backgroundColor: "rgba(0,0,0,0.2)",
+                zIndex: 999,
+              },
+            }}
+            appElement={document.getElementById("root")}
+            className="model-box"
+          >
+            <ViewTravelStory
+              url={url}
+              storyInfo={openViewModel.data || null}
+              onClose={() => {
+                setopenViewModel((prev) => ({ ...prev, isShown: false }));
+              }}
+              onEditClick={() => {
+                setopenViewModel((prev) => ({ ...prev, isShown: false }));
+                handelEdit(openViewModel.data || null);
+              }}
+              onDeleteClick={() => {
+                deleteTravelStory(openViewModel.data || null);
+              }}
+            />
+          </Modal>
+
           {/* Add Button */}
           <button
-            className="w-14 h-14 items-center flex justify-center rounded-full bg-cyan-300 hover:bg-cyan-400 fixed right-10 bottom-10"
+            className="w-14 h-14 items-center flex justify-center rounded-full bg-cyan-300 hover:bg-cyan-400 fixed right-10 bottom-10 z-50"
             onClick={() => {
               setOpenAddEditModel({ isShown: true, type: "add", data: null });
             }}

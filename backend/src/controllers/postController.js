@@ -89,6 +89,12 @@ export const EditStory = async (req, res) => {
         .json({ error: true, message: "Travel story not found!" });
     }
 
+    let image_filename = travelStory.image; // keep old image
+
+    if (req.file) {
+      image_filename = req.file.filename; // replace if new uploaded
+    }
+
     // Handle image update if a new file is uploaded
     if (req.file) {
       // Delete old image
@@ -99,7 +105,7 @@ export const EditStory = async (req, res) => {
 
     // Update other fields
     // Set new image filename
-    travelStory.image = req.file.filename;
+    travelStory.image = image_filename;
     travelStory.title = title;
     travelStory.story = story;
     travelStory.visitedLocation = visitedLocation;
