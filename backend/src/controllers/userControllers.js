@@ -82,7 +82,7 @@ export const loginUser = async (req, res) => {
     if (!email.trim() || !password.trim()) {
       return res
         .status(400)
-        .json({ error: true, message: "All Fields are required!" });
+        .json({ success: false, message: "All Fields are required!" });
     }
     const user = await userModel.findOne({ email });
 

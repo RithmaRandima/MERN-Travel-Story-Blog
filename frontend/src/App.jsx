@@ -5,6 +5,8 @@ import Home from "./pages/Home/Home";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Login from "./pages/Auth/Login";
 import SignUp from "./pages/Auth/SignUp";
+import Example from "./pages/Home/Example";
+import UserStroyCollection from "./pages/Home/UserStroyCollection";
 
 const App = () => {
   return (
@@ -12,7 +14,8 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Root />} />
-          <Route path="/dashboard" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/dashboard" element={<UserStroyCollection />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
         </Routes>
@@ -28,7 +31,7 @@ const Root = () => {
   return isAuthenticated ? (
     <Navigate to={"/dashboard"} />
   ) : (
-    <Navigate to={"/login"} />
+    <Navigate to={"/home"} />
   );
 };
 

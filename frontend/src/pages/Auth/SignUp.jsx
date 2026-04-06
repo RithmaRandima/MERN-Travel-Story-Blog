@@ -37,7 +37,7 @@ const SignUp = () => {
 
     try {
       const response = await axiosInstance.post("/api/user/create-account", {
-        fullName: data.name,
+        fullName: data.fullName,
         email: data.email,
         password: data.password,
       });
