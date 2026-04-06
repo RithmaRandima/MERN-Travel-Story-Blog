@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "../../components/Navbar";
 import Hero from "../../components/Hero";
 import Categories from "../../components/Categories";
+import AuthorsSection from "../../components/AuthorsSection";
 
 const Example = () => {
   return (
@@ -141,6 +142,9 @@ const Example = () => {
           </div>
         </div>
       </div>
+
+      <AuthorsSection />
+
       {/* 🔻 FOOTER */}
       <footer className="bg-gray-900 text-gray-300 py-10">
         <div className="max-w-6xl mx-auto px-4 grid md:grid-cols-3 gap-8">

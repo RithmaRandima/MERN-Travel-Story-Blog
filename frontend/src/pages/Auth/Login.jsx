@@ -4,6 +4,7 @@ import PasswordInput from "../../components/PasswordInput";
 import validator from "validator";
 import axiosInstance from "../../utils/axiosinstance";
 import { FaGoogle } from "react-icons/fa";
+import { useBlog } from "../../context/Blog-Context";
 
 const Login = () => {
   const [data, setData] = useState({
@@ -12,7 +13,7 @@ const Login = () => {
   });
   const [error, setError] = useState(null);
 
-  const navigate = useNavigate();
+  const { navigate, login } = useBlog();
 
   const handelLogin = async (e) => {
     e.preventDefault();
@@ -36,8 +37,8 @@ const Login = () => {
       });
 
       if (response.data?.accessToken) {
-        localStorage.setItem("token", response.data.accessToken);
-        navigate("/dashboard");
+        login(response.data.user, response.data.accessToken);
+        navigate("/home");
       }
     } catch (error) {
       setError(error.response?.data?.message || "Unexpected error occurred");

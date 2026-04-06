@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import ProfileInfo from "./ProfileInfo";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa"; // social icons
+import { useBlog } from "../context/Blog-Context";
 
-const Navbar = ({ userInfo }) => {
+const Navbar = () => {
   const [show, setShow] = useState(true);
   const [lastScroll, setLastScroll] = useState(0);
-  const isToggle = localStorage.getItem("token");
-  const navigate = useNavigate();
+  const { navigate, user, token } = useBlog();
 
   const onLogout = () => {
     localStorage.clear();
@@ -49,8 +49,8 @@ const Navbar = ({ userInfo }) => {
           Travel Story
         </div>
         <div className="w-20">{/* empty space for alignment */}</div>
-        {isToggle ? (
-          <ProfileInfo userInfo={userInfo} onLogout={onLogout} />
+        {token ? (
+          <ProfileInfo userInfo={user} onLogout={onLogout} />
         ) : (
           <Link
             to="/login"

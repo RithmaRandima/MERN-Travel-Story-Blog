@@ -48,8 +48,17 @@ export const createAccount = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const profilePic = req.files?.profilePic?.[0]?.path || "";
-    const coverPic = req.files?.coverPic?.[0]?.path || "";
+    // Get uploaded files safely
+    let profilePic = req.files?.profilePic?.[0]?.path || "";
+    let coverPic = req.files?.coverPic?.[0]?.path || "";
+
+    // Replace backslashes with forward slashes (Windows fix)
+    profilePic = profilePic.replace(/\\/g, "/");
+    coverPic = coverPic.replace(/\\/g, "/");
+
+    // Remove the "uploads/" prefix if your static route is /images
+    profilePic = profilePic.replace(/^uploads\//, "");
+    coverPic = coverPic.replace(/^uploads\//, "");
 
     const user = new userModel({
       firstName,
@@ -73,7 +82,7 @@ export const createAccount = async (req, res) => {
 
     res.status(201).json({
       error: false,
-      user: { fullName: user.fullName, email: user.email },
+      user: user,
       accessToken,
       message: "Registration Successfull!",
     });
@@ -116,7 +125,7 @@ export const loginUser = async (req, res) => {
     return res.status(200).json({
       error: false,
       message: "Login Successfull!",
-      user: { fullName: user.fullName, email: user.email },
+      user: user,
       accessToken,
     });
   } catch (error) {
