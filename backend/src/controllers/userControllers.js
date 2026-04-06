@@ -151,3 +151,20 @@ export const getUser = async (req, res) => {
     message: "",
   });
 };
+
+export const getAllUsers = async (req, res) => {
+  try {
+    const users = await userModel.find();
+    res.status(200).json({
+      error: false,
+      users: users,
+      message: "Users Successfully Fetched",
+    });
+  } catch (error) {
+    res.status(400).json({
+      error: true,
+      message: "Error on Server",
+    });
+    console.log("Error in getAllUsers function!", error);
+  }
+};

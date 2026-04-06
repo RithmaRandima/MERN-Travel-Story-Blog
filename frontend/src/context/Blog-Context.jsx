@@ -1,7 +1,7 @@
 // BlogContext.js
 import { createContext, useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import axiosInstance from "../utils/axiosinstance";
 // Create context
 const BlogContext = createContext();
 
@@ -9,6 +9,7 @@ const BlogContext = createContext();
 export const BlogProvider = ({ children }) => {
   const navigate = useNavigate();
 
+  const [allAuthors, setAllAuthors] = useState([]);
   // Initialize state from localStorage
   const [token, setToken] = useState(() => localStorage.getItem("token"));
   const [user, setUser] = useState(() => {
@@ -33,7 +34,26 @@ export const BlogProvider = ({ children }) => {
     navigate("/home"); // redirect to login after logout
   };
 
+  const getAllAuthors = async (req, res) => {
+    try {
+      const { data } = await axiosInstance.get("/api/user/get-all-users");
+
+      if (data?.users) {
+        setAllAuthors(data.users);
+      }
+    } catch (error) {
+      console.log("Error fetching authors:", error);
+    }
+  };
+
+  useEffect(() => {
+    getAllAuthors();
+  }, []);
+
+  console.log(allAuthors);
+
   const value = {
+    allAuthors,
     user,
     token,
     login,

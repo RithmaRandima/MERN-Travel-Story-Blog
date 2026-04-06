@@ -1,6 +1,7 @@
 import express from "express";
 import {
   createAccount,
+  getAllUsers,
   getUser,
   loginUser,
 } from "../controllers/userControllers.js";
@@ -19,4 +20,5 @@ userRoute.post(
 );
 userRoute.post("/login", loginUser);
 userRoute.get("/get-user", authenticateToken, getUser);
+userRoute.get("/get-all-users", getAllUsers);
 export default userRoute;
