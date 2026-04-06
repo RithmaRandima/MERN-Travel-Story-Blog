@@ -5,8 +5,7 @@ import Home from "./pages/Home/Home";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Login from "./pages/Auth/Login";
 import SignUp from "./pages/Auth/SignUp";
-import Example from "./pages/Home/Example";
-import UserStroyCollection from "./pages/Home/UserStroyCollection";
+import UserStroyProfile from "./pages/Home/UserStroyProfile";
 
 const App = () => {
   return (
@@ -15,7 +14,8 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Root />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/dashboard" element={<UserStroyCollection />} />
+          <Route path="/Profile" element={<UserStroyProfile />} />
+          <Route path="/stories/:id" element={<UserStroyProfile />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
         </Routes>
@@ -29,7 +29,7 @@ const Root = () => {
   const isAuthenticated = !!localStorage.getItem("token");
 
   return isAuthenticated ? (
-    <Navigate to={"/dashboard"} />
+    <Navigate to={"/Profile"} />
   ) : (
     <Navigate to={"/home"} />
   );

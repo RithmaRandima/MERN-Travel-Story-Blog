@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import PasswordInput from "../../components/PasswordInput";
 import validator from "validator";
 import axiosInstance from "../../utils/axiosinstance";
+import { FaGoogle } from "react-icons/fa";
 
 const Login = () => {
   const [data, setData] = useState({
@@ -46,13 +47,9 @@ const Login = () => {
 
   console.log(data);
   return (
-    <div className="h-screen bg-cyan-50 overflow-hidden relative">
-      <div className="login-ui-box right-10 " />
-      <div className="login-ui-box bg-cyan-200 -bottom-40 right-1/3" />
-      <div className="login-ui-box bg-cyan-300 top-10 left-17" />
-
+    <div className="signin-form h-screen overflow-hidden relative">
       <div className="container h-screen flex items-center justify-center px-20 mx-auto">
-        <div className="login-bg-img w-2/4 h-[90vh] flex items-end rounded-lg p-10 z-50 ">
+        <div className="login-bgimg w-[600px] h-[90vh] flex items-end rounded-lg p-10 z-50 ">
           <div>
             <h4 className="text-5xl text-white font-semibold leading-[58px]">
               Capture your <br />
@@ -65,41 +62,63 @@ const Login = () => {
           </div>
         </div>
 
-        <div className="w-2/4 h-[75vh] bg-white rounded-r-lg relative p-16 shadow-lg shadow-cyan-200/50">
+        <div className="w-[420px] backdrop-blur-[8px] pt-15 pb-7 h-fit bg-white/10 rounded-[25px] relative p-5 ">
           <form onSubmit={handelLogin}>
-            <h4 className="text-2xl font-semibold mb-7">Login</h4>
-            <input
-              type="text"
-              placeholder="Email"
-              className="input-box"
-              value={data.email}
-              onChange={(e) => {
-                setData((data) => ({ ...data, email: e.target.value }));
-              }}
-            />
-            <PasswordInput
-              value={data.password}
-              onChange={(e) => {
-                setData((data) => ({ ...data, password: e.target.value }));
-              }}
-            />
+            <div>
+              <label className="text-white font-semibold ">Email</label>
+              <input
+                type="text"
+                placeholder="Email"
+                className="input-box"
+                value={data.email}
+                onChange={(e) => {
+                  setData((data) => ({ ...data, email: e.target.value }));
+                }}
+              />
+            </div>
+            <div>
+              <label className="text-white font-semibold ">Password</label>
+              <PasswordInput
+                value={data.password}
+                onChange={(e) => {
+                  setData((data) => ({ ...data, password: e.target.value }));
+                }}
+              />
+            </div>
 
             {error && (
-              <p className="text-red-500 font-semibold text-[12px] my-3">
+              <p className="absolute right-6 top-57 text-red-500 font-semibold text-[12px] my-3">
                 {error}
               </p>
             )}
-            <button className="btn-primary" type="submit">
+
+            <button className="btn-primary mt-7" type="submit">
               LOGIN
             </button>
-            <p className="text-center font-bold my-4 uppercase ">or</p>
-            <button
-              type="button"
-              className="btn-primary btn-light"
-              onClick={() => navigate("/signup")}
+
+            <div className="flex items-center text-white justify-center">
+              <hr className="w-[25%]" />
+              <p className="text-center  my-4 font-bold mx-4 ">or</p>
+              <hr className="w-[25%] " />
+            </div>
+
+            <p
+              className=" text-white  cursor-pointer flex items-center justify-center gap-3 mx-auto"
+              type="submit"
             >
-              CREATE ACCOUNT
-            </button>
+              <FaGoogle className="font-extrabold text-[25px]" />
+              <span className="font-semibold">Login with Google</span>
+            </p>
+
+            <p className=" text-white tracking-[1px] mt-5 text-center">
+              Are You new?{" "}
+              <span
+                className="underline cursor-pointer"
+                onClick={() => navigate("/signup")}
+              >
+                Create an Account
+              </span>
+            </p>
           </form>
         </div>
       </div>

@@ -3,12 +3,21 @@ import { useNavigate } from "react-router-dom";
 import PasswordInput from "../../components/PasswordInput";
 import validator from "validator";
 import axiosInstance from "../../utils/axiosinstance";
+import { IoIosAddCircle } from "react-icons/io";
+import { FaCamera } from "react-icons/fa";
+
+import defaultCoverImg from "../../assets/cities-bg.jpg";
+import defaultProfileImg from "../../assets/profile-img.jpg";
 
 const SignUp = () => {
+  const [profilePicture, setProfilePicture] = useState(null);
+  const [coverPicture, setCoverPicture] = useState(null);
   const [data, setData] = useState({
-    fullName: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
+    bio: "",
   });
   const [error, setError] = useState(null);
 
@@ -17,34 +26,54 @@ const SignUp = () => {
   // handelSingup Function
   const handelSignUp = async (e) => {
     e.preventDefault();
-
     setError(null);
 
-    if (!data.fullName.trim()) {
-      setError("Please Enter Name");
+    // Validation
+    if (!data.firstName.trim()) {
+      setError("Please Enter First Name");
       return;
     }
-
+    if (!data.lastName.trim()) {
+      setError("Please Enter Last Name");
+      return;
+    }
     if (!data.email || !validator.isEmail(data.email)) {
       setError("Please Enter valid Email");
       return;
     }
-
     if (!data.password) {
       setError("Please Enter the Password");
       return;
     }
 
     try {
-      const response = await axiosInstance.post("/api/user/create-account", {
-        fullName: data.fullName,
-        email: data.email,
-        password: data.password,
-      });
+      // Create FormData for file upload
+      const formData = new FormData();
+      formData.append("firstName", data.firstName);
+      formData.append("lastName", data.lastName);
+      formData.append("bio", data.bio || "");
+      formData.append("email", data.email);
+      formData.append("password", data.password);
 
+      // Append files if they exist
+      if (profilePicture) formData.append("profilePic", profilePicture);
+      if (coverPicture) formData.append("coverPic", coverPicture);
+
+      // Axios request with multipart/form-data
+      const response = await axiosInstance.post(
+        "/api/user/create-account",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        },
+      );
+
+      // Handle success
       if (response.data?.accessToken) {
         localStorage.setItem("token", response.data.accessToken);
-        navigate("/dashboard");
+        navigate("/home");
       }
     } catch (error) {
       setError(error.response?.data?.message || "Unexpected error occurred");
@@ -54,13 +83,10 @@ const SignUp = () => {
 
   console.log(data);
   return (
-    <div className="h-screen bg-cyan-50 overflow-hidden relative">
-      <div className="login-ui-box right-10 " />
-      <div className="login-ui-box bg-cyan-200 -bottom-40 right-1/3" />
-      <div className="login-ui-box bg-cyan-300 top-10 left-17" />
-
-      <div className="container h-screen flex items-center justify-center px-20 mx-auto">
-        <div className="signup-bg-img w-2/4 h-[90vh] flex items-end rounded-lg p-10 z-50 ">
+    <div className="h-screen relative">
+      <div className="signup-form container h-screen flex items-center justify-center mx-auto">
+        {/* left */}
+        <div className=" w-[clac(100vw-600px)] h-full flex items-end rounded-lg p-10 z-50 ">
           <div>
             <h4 className="text-5xl text-white font-semibold leading-[58px]">
               Join the <br />
@@ -73,34 +99,148 @@ const SignUp = () => {
           </div>
         </div>
 
-        <div className="w-2/4 h-[75vh] bg-white rounded-r-lg relative p-16 shadow-lg shadow-cyan-200/50">
+        {/* right */}
+        <div className="w-[800px] h-[100vh] bg-white relative py-4 p-6 ">
           <form onSubmit={handelSignUp}>
-            <h4 className="text-2xl font-semibold mb-7">SignUp</h4>
-            <input
-              type="text"
-              placeholder="Name"
-              className="input-box"
-              value={data.fullName}
-              onChange={(e) => {
-                setData((data) => ({ ...data, fullName: e.target.value }));
-              }}
-            />
-            <input
-              type="text"
-              placeholder="Email"
-              className="input-box"
-              value={data.email}
-              onChange={(e) => {
-                setData((data) => ({ ...data, email: e.target.value }));
-              }}
-            />
-            <PasswordInput
-              value={data.password}
-              onChange={(e) => {
-                setData((data) => ({ ...data, password: e.target.value }));
-              }}
-            />
+            {/* img section */}
+            <div className="">
+              {/* cover photo */}
+              <div className="relative w-[100%] mx-auto h-[150px] rounded-[30px] bg-red-20">
+                {coverPicture ? (
+                  <img
+                    src={URL.createObjectURL(coverPicture)}
+                    alt=""
+                    className="w-full h-full object-cover rounded-xl object-center"
+                  />
+                ) : (
+                  <img
+                    src={defaultCoverImg}
+                    alt="default Cover"
+                    className="w-full h-full object-cover rounded-xl object-center opacity-50"
+                  />
+                )}
 
+                <label
+                  htmlFor="coverPicture"
+                  className="absolute w-fit h-fit  bottom-2 right-2  cursor-pointer bg-white text-black flex  items-center justify-center rounded-full py-1 px-4 gap-3"
+                >
+                  <FaCamera />
+                  <p>Edit Cover Photo</p>
+                </label>
+                <input
+                  type="file"
+                  hidden
+                  id="coverPicture"
+                  onChange={(e) => {
+                    setCoverPicture(e.target.files[0]);
+                  }}
+                />
+              </div>
+
+              {/* profile photo */}
+              <div className="relative w-[120px] mx-auto h-[120px] -mt-15 rounded-full border-3 border-white bg-white">
+                {profilePicture ? (
+                  <img
+                    src={URL.createObjectURL(profilePicture)}
+                    alt=""
+                    className="w-full h-full object-cover rounded-full object-top"
+                  />
+                ) : (
+                  <img
+                    src={defaultProfileImg}
+                    alt="Default Profile Image"
+                    className="w-full h-full object-cover rounded-full object-top opacity-50"
+                  />
+                )}
+
+                <label
+                  htmlFor="profilePicture"
+                  className="absolute text-white border-1 bottom-2 -right-2  cursor-pointer bg-black h-9 w-9 flex  items-center justify-center rounded-full gap-3"
+                >
+                  <FaCamera className="text-[15px]" />
+                </label>
+                <input
+                  type="file"
+                  hidden
+                  id="profilePicture"
+                  onChange={(e) => {
+                    setProfilePicture(e.target.files[0]);
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* name section */}
+            <div className="w-full flex items-center gap-5 mt-3">
+              {/* First Name */}
+              <div className="">
+                <label className="font-semibold">First Name</label>
+                <input
+                  type="text"
+                  placeholder="First Name"
+                  className="register-input-box"
+                  value={data.firstName}
+                  onChange={(e) => {
+                    setData((data) => ({ ...data, firstName: e.target.value }));
+                  }}
+                />
+              </div>
+
+              {/* Last Name */}
+              <div className="">
+                <label className="font-semibold">Last Name</label>
+                <input
+                  type="text"
+                  placeholder="Last Name"
+                  className="register-input-box"
+                  value={data.lastName}
+                  onChange={(e) => {
+                    setData((data) => ({ ...data, lastName: e.target.value }));
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Email and Password */}
+            <div className="w-full flex items-center gap-5 ">
+              {/* Email */}
+              <div className="w-full">
+                <label className="font-semibold">Email</label>
+                <input
+                  type="text"
+                  placeholder="Email"
+                  className="register-input-box"
+                  value={data.email}
+                  onChange={(e) => {
+                    setData((data) => ({ ...data, email: e.target.value }));
+                  }}
+                />
+              </div>
+              {/* Password */}
+              <div className=" w-full">
+                <label className="font-semibold">Password</label>
+                <PasswordInput
+                  value={data.password}
+                  onChange={(e) => {
+                    setData((data) => ({ ...data, password: e.target.value }));
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="w-full">
+              <label className="font-semibold">Bio</label>
+              <textarea
+                type="text"
+                rows={3}
+                placeholder="Content here"
+                className="register-input-box"
+                value={data.bio}
+                onChange={(e) => {
+                  setData((data) => ({ ...data, bio: e.target.value }));
+                }}
+              />
+            </div>
             {error && (
               <p className="text-red-500 font-semibold text-[12px] my-3">
                 {error}
@@ -108,14 +248,6 @@ const SignUp = () => {
             )}
             <button className="btn-primary" type="submit">
               CREATE ACCOUNT
-            </button>
-            <p className="text-center font-bold my-4 uppercase ">or</p>
-            <button
-              type="button"
-              className="btn-primary btn-light"
-              onClick={() => navigate("/login")}
-            >
-              LOGIN
             </button>
           </form>
         </div>

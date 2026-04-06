@@ -9,12 +9,43 @@
   }
 }
 
+.logo {
+  font-family: "Allura", cursive;
+}
+
+.hero-title {
+  font-family: "Caveat", cursive;
+  /* font-weight: 400; */
+  /* font-style: normal; */
+}
+
+.signin-form {
+  background:
+    linear-gradient(to right, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.01)),
+    url("./assets/login-bg.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.signup-form {
+  background:
+    linear-gradient(to right, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.01)),
+    url("./assets/forest-bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
 @layer components {
   .input-box {
-    @apply w-full text-sm bg-cyan-600/5 rounded px-5 py-3 mb-4 outline-none;
+    @apply w-full text-sm bg-white mt-2 rounded px-5 py-3 mb-4 outline-none;
+  }
+  .register-input-box {
+    @apply w-full text-sm bg-white mt-2 border border-slate-300/50 rounded px-5 py-3 mb-4 outline-none;
   }
   .btn-primary {
-    @apply w-full text-sm font-medium text-white bg-cyan-500 shadow-lg shadow-cyan-200/50 p-2.5 rounded-full my-1 hover:bg-cyan-100 hover:text-black;
+    @apply w-full text-sm font-medium text-white bg-blue-500  p-2.5 rounded-[10px] my-1 hover:bg-cyan-100 hover:text-black;
   }
   .btn-light {
     @apply bg-cyan-50 text-black shadow-cyan-100/0 border-cyan-100;
@@ -54,18 +85,4 @@
     background-color: #057c8e;
     border-radius: 3px;
   }
-}
-
-.login-bg-img {
-  background: url("./assets/bg.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-}
-
-.signup-bg-img {
-  background: url("./assets/signup-img.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
 }

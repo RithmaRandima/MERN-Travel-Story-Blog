@@ -5,9 +5,14 @@ import validator from "validator";
 
 // create Account
 export const createAccount = async (req, res) => {
-  const { fullName, email, password } = req.body;
+  const { firstName, lastName, email, password, bio } = req.body;
   try {
-    if (!fullName?.trim() || !email?.trim() || !password?.trim()) {
+    if (
+      !firstName?.trim() ||
+      !lastName.trim() ||
+      !email?.trim() ||
+      !password?.trim()
+    ) {
       return res.status(400).json({ message: "All fields required" });
     }
 
@@ -43,10 +48,17 @@ export const createAccount = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    const profilePic = req.files?.profilePic?.[0]?.path || "";
+    const coverPic = req.files?.coverPic?.[0]?.path || "";
+
     const user = new userModel({
-      fullName,
+      firstName,
+      lastName,
       email,
       password: hashedPassword,
+      profilePic,
+      coverPic,
+      bio,
     });
 
     await user.save();

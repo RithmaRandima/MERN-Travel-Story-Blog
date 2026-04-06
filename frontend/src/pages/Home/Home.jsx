@@ -1,35 +1,23 @@
 import React from "react";
 import Navbar from "../../components/Navbar";
-import HeroCarousel from "../../components/HeroCarousel";
+import Hero from "../../components/Hero";
+import Categories from "../../components/Categories";
 
 const Example = () => {
   return (
     <div className="bg-white text-gray-800">
       <Navbar />
-      <HeroCarousel />
-      {/* 🌍 HERO SECTION */}
-      <div className="h-[60vh] bg-[url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e')] bg-cover bg-center flex items-center justify-center">
-        <div className="text-center bg-black/40 p-10 rounded-xl">
-          <h1 className="text-4xl md:text-5xl font-bold text-white">
-            Explore the World 🌍
-          </h1>
-          <p className="text-white mt-4">
-            Discover stories, tips and hidden gems from travelers
-          </p>
-          <button className="mt-6 bg-sky-500 hover:bg-sky-600 text-white px-6 py-2 rounded-lg">
-            Start Exploring
-          </button>
-        </div>
-      </div>
-
-      {/* 🔍 SEARCH */}
+      <Hero />
+      {/* 🔍 SEARCH
       <div className="max-w-5xl mx-auto mt-[-30px] px-4">
         <input
           type="text"
           placeholder="Search destinations..."
           className="w-full p-4 rounded-xl shadow-lg border outline-none"
         />
-      </div>
+      </div> */}
+
+      <Categories />
 
       {/* 🧭 CATEGORIES */}
       <div className="max-w-6xl mx-auto px-4 mt-10">
@@ -45,7 +33,6 @@ const Example = () => {
           ))}
         </div>
       </div>
-
       {/* ⭐ FEATURED BLOG */}
       <div className="max-w-6xl mx-auto px-4 mt-12">
         <h2 className="text-2xl font-semibold mb-4">Featured Story</h2>
@@ -67,7 +54,6 @@ const Example = () => {
           </div>
         </div>
       </div>
-
       {/* 📰 BLOG CARDS */}
       <div className="max-w-6xl mx-auto px-4 mt-12">
         <h2 className="text-2xl font-semibold mb-6">Latest Stories</h2>
@@ -98,7 +84,6 @@ const Example = () => {
           ))}
         </div>
       </div>
-
       {/* 💬 TESTIMONIALS */}
       <div className="max-w-6xl mx-auto px-4 mt-16">
         <h2 className="text-2xl font-semibold mb-8 text-center">
@@ -129,7 +114,6 @@ const Example = () => {
           ))}
         </div>
       </div>
-
       {/* 🚀 CALL TO ACTION */}
       <div className="bg-sky-600 text-white mt-16 py-12 text-center">
         <h2 className="text-3xl font-bold">Share Your Travel Story 🌍</h2>
@@ -140,7 +124,6 @@ const Example = () => {
           Get Started
         </button>
       </div>
-
       {/* 📊 STATS */}
       <div className="bg-sky-50 mt-16 py-10">
         <div className="max-w-6xl mx-auto grid grid-cols-3 text-center">
@@ -158,7 +141,6 @@ const Example = () => {
           </div>
         </div>
       </div>
-
       {/* 🔻 FOOTER */}
       <footer className="bg-gray-900 text-gray-300 py-10">
         <div className="max-w-6xl mx-auto px-4 grid md:grid-cols-3 gap-8">
