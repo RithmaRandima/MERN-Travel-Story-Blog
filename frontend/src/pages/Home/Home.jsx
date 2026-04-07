@@ -3,6 +3,7 @@ import Navbar from "../../components/Navbar";
 import Hero from "../../components/Hero";
 import Categories from "../../components/Categories";
 import AuthorsSection from "../../components/AuthorsSection";
+import CallToActionSection from "../../components/CallToActionSection";
 
 const Example = () => {
   return (
@@ -116,15 +117,7 @@ const Example = () => {
         </div>
       </div>
       {/* 🚀 CALL TO ACTION */}
-      <div className="bg-sky-600 text-white mt-16 py-12 text-center">
-        <h2 className="text-3xl font-bold">Share Your Travel Story 🌍</h2>
-        <p className="mt-3">
-          Join our community and inspire others with your adventures
-        </p>
-        <button className="mt-6 bg-white text-sky-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100">
-          Get Started
-        </button>
-      </div>
+      <CallToActionSection />
       {/* 📊 STATS */}
       <div className="bg-sky-50 mt-16 py-10">
         <div className="max-w-6xl mx-auto grid grid-cols-3 text-center">

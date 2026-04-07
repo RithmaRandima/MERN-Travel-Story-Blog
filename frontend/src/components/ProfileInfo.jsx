@@ -4,6 +4,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { IoMdSettings } from "react-icons/io";
 import { IoLogOut } from "react-icons/io5";
 import { FaEye } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const ProfileInfo = () => {
   const { user, logout } = useBlog();
@@ -18,7 +19,7 @@ const ProfileInfo = () => {
         <img
           src={`http://localhost:5000/images/${user.profilePic}`}
           alt="Profile"
-          className="w-11 h-11 rounded-full object-cover border-2 border-slate-300"
+          className="w-11 h-11 rounded-full object-cover object-top border-2 border-slate-300"
         />
 
         <div className="ml-2.5">
@@ -56,7 +57,7 @@ const ProfileInfo = () => {
           <img
             src={`http://localhost:5000/images/${user.profilePic}`}
             alt="Profile"
-            className="w-12 h-12 rounded-full object-cover border"
+            className="w-12 h-12 rounded-full object-cover object-top border"
           />
 
           <div className="mt-2 text-center">
@@ -74,10 +75,12 @@ const ProfileInfo = () => {
             <p className="text-[14px] font-semibold">Settings</p>
           </div>
 
-          <div className="pl-5 border border-slate-300/40 hover:bg-slate-50 hover:scale-[1.03] transition-all duration-200 mb-3 rounded-full w-full flex items-center gap-3 p-2 cursor-pointer">
-            <FaEye className="text-[20px]" />
-            <p className="text-[14px] font-semibold">Profile</p>
-          </div>
+          <Link to="/profile">
+            <div className="pl-5 border border-slate-300/40 hover:bg-slate-50 hover:scale-[1.03] transition-all duration-200 mb-3 rounded-full w-full flex items-center gap-3 p-2 cursor-pointer">
+              <FaEye className="text-[20px]" />
+              <p className="text-[14px] font-semibold">Profile</p>
+            </div>
+          </Link>
 
           <div
             onClick={logout}

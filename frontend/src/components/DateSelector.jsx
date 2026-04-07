@@ -1,44 +1,66 @@
 import moment from "moment";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { DayPicker } from "react-day-picker";
-import { MdClose, MdOutlineDateRange } from "react-icons/md";
+import { MdOutlineDateRange } from "react-icons/md";
+import { motion, AnimatePresence } from "framer-motion";
 
 const DateSelector = ({ date, setDate }) => {
   const [openDayPicker, setOpenDayPicker] = useState(false);
+  const containerRef = useRef(null);
+
+  // Close picker when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target)
+      ) {
+        setOpenDayPicker(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
-    <div>
+    <div className="relative inline-block" ref={containerRef}>
+      {/* Button */}
       <button
-        className="inline-flex items-center gap-2 text-[13px] font-medium text-sky-600 bg-sky-200/40 hover:bg-sky-200/70 rounded-full px-2 py-1 cursor-pointer my-4"
-        onClick={() => {
-          setOpenDayPicker(true);
-        }}
+        type="button"
+        className="inline-flex items-center gap-2 text-[15px] font-medium text-black bg-sky-300/40 hover:bg-sky-200/70 rounded-full px-4 py-1.5 cursor-pointer"
+        onClick={() => setOpenDayPicker((prev) => !prev)}
       >
         <MdOutlineDateRange className="text-lg" />
-        {date
-          ? moment(date).format("Do MMM YYYY")
-          : moment().format("Do MMM YYYY")}
+        {date ? moment(date).format("Do MMM YYYY") : "Pick a date"}
       </button>
 
-      {openDayPicker && (
-        <div className="overflow-y-scroll p-5 bg-sky-50/80 rounded-lg relative pt-9">
-          <button
-            className="w-10 h-10 rounded-full flex items-center justify-center bg-sky-100 hover:bg-sky-200 absolute top-3 right-3 cursor-pointer"
-            onClick={() => {
-              setOpenDayPicker(false);
-            }}
+      {/* Calendar */}
+      <AnimatePresence>
+        {openDayPicker && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 5 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.25 }}
+            className="absolute top-full right-0 mt-2 w-[350px] rounded-lg shadow-lg z-50"
           >
-            <MdClose className="text-xl text-sky-600" />
-          </button>
+            <DayPicker
+              className="p-5 bg-white shadow-[1px_2px_5px_rgba(0,0,0,0.2)] rounded-lg"
+              captionLayout="dropdown-buttons"
+              mode="single"
+              selected={date}
+              onSelect={(selectedDate) => {
+                if (!selectedDate) return; // 🔥 prevent undefined bug
 
-          <DayPicker
-            captionLayout="dropdown-buttons"
-            mode="single"
-            selected={date}
-            onSelect={setDate}
-            pagedNavogation
-          />
-        </div>
-      )}
+                setDate(selectedDate); // update parent state
+                setOpenDayPicker(false); // close picker after select
+              }}
+              pagedNavigation // ✅ fixed typo
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

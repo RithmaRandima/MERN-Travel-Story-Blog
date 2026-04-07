@@ -37,12 +37,23 @@
   background-position: center;
 }
 
+/* Hide scrollbar for Chrome, Safari */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge, Firefox */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 @layer components {
   .input-box {
     @apply w-full text-sm bg-white mt-2 rounded px-5 py-3 mb-4 outline-none;
   }
   .register-input-box {
-    @apply w-full text-sm bg-white mt-2 border border-slate-300/50 rounded px-5 py-3 mb-4 outline-none;
+    @apply w-full text-sm bg-white mt-2 border border-slate-300/50 rounded px-5 py-3 mb-4 outline-slate-300/20;
   }
   .btn-primary {
     @apply w-full text-sm font-medium text-white bg-blue-500  p-2.5 rounded-[10px] my-1 hover:bg-cyan-100 hover:text-black;

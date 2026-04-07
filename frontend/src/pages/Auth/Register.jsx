@@ -93,20 +93,11 @@ const Register = () => {
       <div className="signup-form container h-screen flex items-center justify-center mx-auto">
         {/* left */}
         <div className=" w-[clac(100vw-600px)] h-full flex items-end rounded-lg p-10 z-50 ">
-          <div>
-            <h4 className="text-5xl text-white font-semibold leading-[58px]">
-              Join the <br />
-              Adventure
-            </h4>
-            <p className="text-[15px] text-white leading-6 pr-7 mt-4">
-              Create an account to start documenting your travels and preseving
-              your memories in your personal travel journal. journal
-            </p>
-          </div>
+          <div className="w-[600px]"></div>
         </div>
 
         {/* right */}
-        <div className="w-[800px] h-[100vh] bg-white relative py-4 p-6 ">
+        <div className="w-[800px] h-[100vh] bg-white relative py-4 p-6  overflow-y-scroll">
           <form onSubmit={handelSignUp}>
             {/* img section */}
             <div className="">
@@ -258,6 +249,19 @@ const Register = () => {
           </form>
         </div>
       </div>
+      {/* text section */}
+      <div className="absolute bottom-7 left-7 backdrop-blur-[3px] w-[500px] border-2 border-white p-7 ">
+        <h4 className="text-5xl text-white font-bold leading-[58px] tracking-[5px]">
+          Join the <br />
+          Adventure
+        </h4>
+        <p className="text-[15px] text-white leading-6 pr-7 mt-4">
+          Create an account to start documenting your travels and preseving your
+          memories in your personal travel journal. journal
+        </p>
+      </div>
+
+      {/* box */}
     </div>
   );
 };
