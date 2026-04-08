@@ -2,11 +2,17 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axiosInstance from "../../utils/axiosinstance";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Parallax } from "swiper/modules";
+import { Autoplay, Parallax, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/parallax";
+import "swiper/css/navigation";
 import Navbar from "../../components/Navbar";
-import { GiWorld } from "react-icons/gi";
+import {
+  GiWorld,
+  GiPathDistance,
+  GiHiking,
+  GiJumpAcross,
+} from "react-icons/gi";
 import moment from "moment";
 import { PiMapPinAreaFill } from "react-icons/pi";
 import {
@@ -16,11 +22,7 @@ import {
   FaTiktok,
   FaYoutube,
 } from "react-icons/fa";
-import { GiPathDistance } from "react-icons/gi";
-import { GiHiking } from "react-icons/gi";
 import { BsFillStopwatchFill } from "react-icons/bs";
-import { GiJumpAcross } from "react-icons/gi";
-import { Navigation } from "swiper/modules"; // add Navigation module
 import { FaX } from "react-icons/fa6";
 
 const TravelStory = () => {
@@ -37,45 +39,37 @@ const TravelStory = () => {
       }
     };
     fetchStoryByID();
-
     // window.scrollTo(0, 0);
   }, [id]);
 
-  console.log(story);
-
   const coverImages = [
     story?.mainImage,
-    ...(story?.galleryImages?.[0] ? [story.galleryImages[0]] : []),
-    ...(story?.galleryImages?.[1] ? [story.galleryImages[1]] : []),
-    ...(story?.galleryImages?.[2] ? [story.galleryImages[2]] : []),
-    ...(story?.galleryImages?.[3] ? [story.galleryImages[3]] : []),
-  ];
+    ...(story?.galleryImages?.slice(0, 4) || []),
+  ].filter(Boolean);
 
   return (
-    <div className="h-fit relative">
+    <div className="relative">
       <Navbar />
 
-      {/* Fixed Swiper Section */}
-      <div className="fixed top-0 left-0 w-full h-[90vh] z-10 overflow-hidden">
+      {/* 🔥 FIXED HERO SWIPER */}
+      <div className="fixed top-0 left-0 w-full h-[90vh] z-0 overflow-hidden">
         <Swiper
           modules={[Autoplay, Parallax]}
           spaceBetween={0}
           slidesPerView={1}
           loop
-          speed={3000}
+          speed={2000}
           autoplay={{ delay: 4000, disableOnInteraction: false }}
           parallax
+          className="h-full"
         >
           {coverImages.map((image, index) => (
             <SwiperSlide key={index}>
-              <div
-                className="h-full w-full relative overflow-hidden"
-                data-swiper-parallax="-23%"
-              >
+              <div className="h-full w-full" data-swiper-parallax="-20%">
                 <img
                   src={`http://localhost:5000/images/${image}`}
                   alt={image}
-                  className="h-[90vh] w-full object-cover"
+                  className="w-full h-full object-cover"
                 />
               </div>
             </SwiperSlide>
@@ -83,194 +77,147 @@ const TravelStory = () => {
         </Swiper>
 
         {/* Gradient overlay */}
-        <div className="absolute z-20 inset-0 bg-gradient-to-t from-white via-white/1 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent"></div>
       </div>
 
-      {/* Content below the fixed Swiper */}
-      <div className="mt-[90vh] h-[400vh] text-center z-10 bg-white relative">
-        {/* overlay */}
-        <div className="absolute -top-50 h-50 inset-0 bg-gradient-to-t from-white via-white/70 to-transparent">
-          <div className="pt-10">
-            <div className="flex justify-center gap-1 items-center">
-              <GiWorld className="text-[25px] " />
-              <p className="font-extrabold text-[20px] "> {story.country}</p>
+      {/* ✅ SPACER (VERY IMPORTANT) */}
+      <div className="h-[90vh]"></div>
+
+      {/* ✅ MAIN CONTENT */}
+      <div className="bg-white relative z-10 pt-10 shadow-lg">
+        {/* Gradient overlay */}
+        <div className="absolute z-20 inset-0 bg-gradient-to-t from-white via-white/50 to-transparent h-[43vh] z-50 -top-68">
+          {/* TITLE */}
+          <div className="text-center absolute left-[50%] w-[100%] top-40 -translate-x-[50%]">
+            <div className="flex justify-center items-center gap-2">
+              <GiWorld className="text-[25px]" />
+              <p className="font-bold text-[20px]">{story.country}</p>
             </div>
-            <h1 className="text-[45px] font-bold w-[60%] mx-auto">
+
+            <h1 className="text-[40px] font-bold w-[60%] mx-auto">
               {story.title}
             </h1>
-          </div>
-          <div className="flex items-center justify-center text-[18px] mt-3">
-            {/* rating */}
-            <div className="flex items-center text-amber-400 ">
-              <FaStar className="text-[14px] mr-1" />
-              <p>
-                <span className="font-bold">4.8</span>/5
-              </p>
-            </div>
 
-            <div className="w-1 h-1 bg-black mx-4 rounded-full"></div>
-
-            {/* category */}
-            <div className="flex items-center gap-2 text-slate-500">
-              <PiMapPinAreaFill className="text-[19px]" />
-              <p>
-                <span className="font-semibold">In</span> {story?.category}
-              </p>
-            </div>
-
-            <div className="w-1 h-1 bg-black mx-4 rounded-full"></div>
-
-            {/* date */}
-            <p className=" font-extralight text-slate-700">
-              {moment(story.visitedDate).format("MMMM D, YYYY")}
-            </p>
-            <div className="w-1 h-1 bg-black mx-4 rounded-full"></div>
-
-            {/* upload time */}
-            <p className="font-extralight text-slate-700">
-              {moment(story.createdAt).fromNow()}
-            </p>
-          </div>
-          {/* tips section */}
-          <div className="mt-15 w-[70%] text-left mx-auto">
-            <h1 className="text-[27px]  font-semibold mb-5">
-              Tips For Visiting
-            </h1>
-            <p className="text-[17px]">
-              {story.tips}
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis,
-              sapiente. Odio, id iste accusamus est ipsa consectetur, modi
-              tempore eaque aspernatur voluptas laudantium dLorem ipsum dolor
-              sit amet consectetur adipisicing elit. Debitis, sapiente. Odio, id
-              iste accusamus est ipsa consectetur, modi tempore eaque aspernatur
-              voluptas laudantium dolores sapiente mollitia harum error facere
-              perspiciatis.
-            </p>
-
-            <div className="w-[100%] h-50 mt-15 ">
-              {/* top */}
-              <div className="flex items-center gap-10">
-                <TipBox
-                  value={`${story.distance}km return`}
-                  logo={<GiPathDistance className="text-[50px]" />}
-                  topic="DISTANCE"
-                />
-                <TipBox
-                  value={`${story.elevationGain}m`}
-                  logo={<GiHiking className="text-[50px]" />}
-                  topic="ELEVATION GAIN"
-                />
+            {/* META */}
+            <div className="flex flex-wrap justify-center items-center text-[16px] mt-3 gap-4">
+              <div className="flex items-center text-amber-400">
+                <FaStar className="mr-1" />
+                <p>
+                  <span className="font-bold">4.8</span>/5
+                </p>
               </div>
 
-              {/* bottom */}
-              <div className="flex items-center gap-10 mt-8">
-                <TipBox
-                  value={`${story.estimatedTime}`}
-                  logo={<BsFillStopwatchFill className="text-[40px] mr-2" />}
-                  topic="ESTIMATED TIME"
-                />
-                <TipBox
-                  value={`${story.difficultyStatus}`}
-                  logo={<GiJumpAcross className="text-[50px]" />}
-                  topic="DIFFICULTY"
-                />
+              <div className="flex items-center gap-1 text-slate-500">
+                <PiMapPinAreaFill />
+                <p>{story?.category}</p>
               </div>
+
+              <p>{moment(story.visitedDate).format("MMMM D, YYYY")}</p>
+              <p>{moment(story.createdAt).fromNow()}</p>
             </div>
           </div>
-          {/* story section */}
-          <div
-            className="mt-15 w-[70%] text-left mx-auto"
-            dangerouslySetInnerHTML={{ __html: story.story }}
-          ></div>
-          {/* Gallery section */}
-          <div className="w-full py-10 mt-15">
-            <Swiper
-              modules={[Autoplay, Parallax, Navigation]}
-              loop
-              speed={3000}
-              autoplay={{ delay: 4000, disableOnInteraction: false }}
-              navigation
-              centeredSlides={true} // Center the active slide
-              slidesPerView={1.3} // Show more slides around the center
-              spaceBetween={40} // Increase space between slides
-              className="w-full mx-auto h-[80vh]" // Reduced height
-            >
-              {coverImages.map((image, index) => (
-                <SwiperSlide key={index}>
-                  <div className="h-full w-full relative flex justify-center items-center">
-                    <img
-                      src={`http://localhost:5000/images/${image}`}
-                      alt={image}
-                      className="h-[80vh] w-full object-cover rounded-4xl"
-                    />
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
+        </div>
 
-          {/* things to do section */}
-          <div className="mt-15 w-[70%] text-left mx-auto">
-            <h1 className="text-[27px]  font-semibold mb-5">Things to Do</h1>
-            <p className="text-[17px]">
-              {story.tips}
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis,
-              sapiente. Odio, id iste accusamus est ipsa consectetur, modi
-              tempore eaque aspernatur voluptas laudantium dLorem ipsum dolor
-              sit amet consectetur adipisicing elit. Debitis, sapiente. Odio, id
-              iste accusamus est ipsa consectetur, modi tempore eaque aspernatur
-              voluptas laudantium dolores sapiente mollitia harum error facere
-              perspiciatis.
-            </p>
-          </div>
+        {/* TIPS */}
+        <div className="mt-25 w-[70%] mx-auto">
+          <h1 className="text-[26px] font-semibold mb-4">Tips For Visiting</h1>
+          <p className="text-[16px]">{story.tips}</p>
 
-          {/* author section */}
-          <div className="bg-white py-3 mt-20 rounded-[7px] p-5 flex items-center shadow-[1px_1px_3px_rgba(0,0,0,0.2)] w-[550px] mx-auto">
-            <img
-              className="w-20 h-20 object-cover rounded-full "
-              src={`http://localhost:5000/images/${story?.userId?.profilePic}`}
-              alt=""
+          <div className="mt-10 grid grid-cols-2 gap-10">
+            <TipBox
+              value={`${story.distance} km`}
+              logo={<GiPathDistance className="text-[40px]" />}
+              topic="DISTANCE"
             />
-            <div className="w-[calc(550px-100px)] text-left ml-5">
-              {/* name */}
-              <p className="font-bold tracking-[1px]">
-                {story?.userId?.firstName} {story?.userId?.lastName}
-              </p>
-              {/* email */}
-              <p className="text-[12px] text-slate-600">
-                {story?.userId?.email} {story?.userId?.lastName}
-              </p>
-              {/* bio data */}
-              <p className="mt-2 text-[15px]">
-                {story?.userId?.bio} {story?.userId?.lastName}
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                suscipit magni vitae veniam ex.
-              </p>
-              <div className="w-full flex items-center justify-start gap-4.5 mt-4">
-                <FaLinkedinIn className="hover:scale-110 hover:text-blue-600 transition" />
-                <FaX className="hover:scale-110 hover:text-slate-500 transition" />
-                <FaYoutube className="hover:scale-110 hover:text-red-600 transition" />
-                <FaTiktok className="hover:scale-110 hover:text-orange-500 transition" />
-                <FaFacebook className="hover:scale-110 hover:text-blue-600 transition" />
-              </div>
+            <TipBox
+              value={`${story.elevationGain} m`}
+              logo={<GiHiking className="text-[40px]" />}
+              topic="ELEVATION"
+            />
+            <TipBox
+              value={story.estimatedTime}
+              logo={<BsFillStopwatchFill className="text-[30px]" />}
+              topic="TIME"
+            />
+            <TipBox
+              value={story.difficultyStatus}
+              logo={<GiJumpAcross className="text-[40px]" />}
+              topic="DIFFICULTY"
+            />
+          </div>
+        </div>
+
+        {/* STORY */}
+        <div
+          className="mt-12 w-[70%] mx-auto"
+          dangerouslySetInnerHTML={{ __html: story.story }}
+        ></div>
+
+        {/* GALLERY */}
+        <div className="w-full py-12 mt-10">
+          <Swiper
+            modules={[Autoplay, Navigation]}
+            loop
+            autoplay={{ delay: 4000 }}
+            navigation
+            centeredSlides
+            slidesPerView={1.2}
+            spaceBetween={30}
+          >
+            {coverImages.map((image, index) => (
+              <SwiperSlide key={index}>
+                <div className="flex justify-center">
+                  <img
+                    src={`http://localhost:5000/images/${image}`}
+                    alt={image}
+                    className="w-full max-h-[80vh] object-cover rounded-3xl"
+                  />
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+
+        {/* AUTHOR */}
+        <div className="bg-white py-6 mt-16 shadow-md w-[550px] mx-auto rounded-lg flex">
+          <img
+            className="w-20 h-20 rounded-full object-cover"
+            src={`http://localhost:5000/images/${story?.userId?.profilePic}`}
+            alt=""
+          />
+
+          <div className="ml-5">
+            <p className="font-bold">
+              {story?.userId?.firstName} {story?.userId?.lastName}
+            </p>
+            <p className="text-sm text-gray-500">{story?.userId?.email}</p>
+
+            <p className="mt-2 text-sm">{story?.userId?.bio}</p>
+
+            <div className="flex gap-4 mt-3">
+              <FaLinkedinIn />
+              <FaX />
+              <FaYoutube />
+              <FaTiktok />
+              <FaFacebook />
             </div>
           </div>
+        </div>
 
-          {/* comments */}
-
-          <div className="bg-black w-[70%] mx-auto p-3 rounded-full pl-10 text-white mt-20">
-            <p className="text-white text-left font-semibold">Comments (3)</p>
+        {/* COMMENTS */}
+        <div className="w-[70%] mx-auto mt-16 pb-20">
+          <div className="bg-black text-white p-3 rounded-full pl-6">
+            Comments (3)
           </div>
 
-          {/* default comment status */}
-          <div className="bg-white py-6 text-left w-[70%] mx-auto p-3 pl-10 mt-10 shadow-[1px_1px_7px_rgba(0,0,0,0.1)] rounded-[10px]">
-            <p className="text-[22px] font-semibold mb-3">Leave a Comment</p>
-            <p className="">
+          <div className="bg-white p-6 mt-6 shadow rounded-lg">
+            <p className="text-lg font-semibold mb-2">Leave a Comment</p>
+            <p>
               You must be{" "}
-              <Link to="/login" className="text-sky-400">
-                logged
+              <Link to="/login" className="text-blue-500">
+                logged in
               </Link>{" "}
-              in to post a comment.
+              to comment.
             </p>
           </div>
         </div>
@@ -281,16 +228,14 @@ const TravelStory = () => {
 
 export default TravelStory;
 
-// tip box
+// TIP BOX
 const TipBox = ({ topic, value, logo }) => {
   return (
-    <div className=" w-80 p-2.5 flex items-center gap-5">
+    <div className="flex items-center gap-4">
       {logo}
-      <div className="ml-4">
-        <h1 className="text-[13px] tracking-[1px] text-slate-600 mb-2">
-          {topic}
-        </h1>
-        <p className="font-semibold text-[25px]">{value}</p>
+      <div>
+        <p className="text-xs text-gray-500">{topic}</p>
+        <p className="font-semibold text-lg">{value}</p>
       </div>
     </div>
   );

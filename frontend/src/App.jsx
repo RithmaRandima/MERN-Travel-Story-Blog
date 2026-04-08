@@ -4,12 +4,12 @@ import { ToastContainer } from "react-toastify";
 import Home from "./pages/Home/Home";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "./pages/Auth/Login";
-import UserStroyProfile from "./pages/Home/UserStroyProfile";
 import Register from "./pages/Auth/Register";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
-import AboutAuthor from "./pages/AboutAuthor/AboutAuthor";
 import "quill/dist/quill.snow.css";
 import TravelStory from "./pages/TravelStory/TravelStory";
+import FullDetailProfile from "./pages/ProfilePage/FullDetailProfile";
+import BolgStories from "./pages/BolgStories/BolgStories";
 const App = () => {
   return (
     <div className="">
@@ -17,8 +17,8 @@ const App = () => {
         <Route path="/" element={<Root />} />
         <Route path="/home" element={<Home />} />
         <Route path="/Profile" element={<ProfilePage />} />
-        <Route path="/aboutAuthor" element={<AboutAuthor />} />
-        {/* <Route path="/stories/" element={<UserStroyProfile />} /> */}
+        <Route path="/fullProfile" element={<FullDetailProfile />} />
+        <Route path="/stories" element={<BolgStories />} />
         <Route path="/stories/:id" element={<TravelStory />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Register />} />

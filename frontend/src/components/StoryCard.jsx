@@ -24,8 +24,8 @@ const StoryCard = ({ story }) => {
             className="w-full h-full object-cover object-top"
             alt=""
           />
-          <div className="absolute inset-0 bg-gradient-to-t bottom-0 top-70 from-white via-white/30 backdrop-blur-[1px] to-transparent"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 z-10 via-white/10 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t bottom-0 top-70 from-white via-white/10 backdrop-blur-[1px] to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-white/5 to-transparent z-10"></div>
         </div>
         {/* profile details section */}
         <div className="absolute w-full h-fit pb-5 z-20  pl-3  bottom-0 left-0 ">

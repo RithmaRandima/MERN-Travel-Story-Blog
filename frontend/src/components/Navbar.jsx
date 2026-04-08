@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ProfileInfo from "./ProfileInfo";
 import { Link } from "react-router-dom";
-import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa"; // social icons
+import { FaFacebook, FaInstagram, FaSearch, FaTwitter } from "react-icons/fa"; // social icons
 import { useBlog } from "../context/Blog-Context";
 
 const Navbar = () => {
@@ -29,6 +29,8 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScroll]);
 
+  const [activeNav, setActivenav] = useState("Home");
+
   return (
     <div
       className={`fixed w-full top-0 z-50  h-30 transition-transform duration-300 ${
@@ -36,28 +38,42 @@ const Navbar = () => {
       }`}
     >
       {/* Top part: Social icons left */}
-      <div className="flex bg-white justify-between items-center h-15 px-2 py-2 border-b">
-        <div className="flex gap-4 text-sky-600">
-          <FaFacebook size={20} className="cursor-pointer hover:text-sky-800" />
-          <FaInstagram
-            size={20}
-            className="cursor-pointer hover:text-pink-500"
-          />
-          <FaTwitter size={20} className="cursor-pointer hover:text-blue-400" />
+      <div className="flex bg-white pl-15 pr-5 justify-between items-center h-18 py-2 ">
+        <div className="flex  items-center">
+          <Link
+            onClick={() => setActivenav("Home")}
+            to="/home"
+            className=" font-extrabold text-lg  text-gray-800 mr-6"
+          >
+            <p>Home</p>
+            {activeNav === "Home" && (
+              <hr className="h-1 w-full rounded-full bg-sky-400 border-0" />
+            )}
+          </Link>
+          <Link
+            onClick={() => setActivenav("Stories")}
+            to="/stories"
+            className=" text-lg font-extrabold text-gray-800"
+          >
+            <p>Stories</p>
+            {activeNav === "Stories" && (
+              <hr className="h-1 w-full rounded-full bg-sky-400 border-0" />
+            )}
+          </Link>
         </div>
-        <div className="mx-auto text-lg font-semibold text-gray-800">
-          Travel Story
-        </div>
-        <div className="w-20">{/* empty space for alignment */}</div>
         {token ? (
           <ProfileInfo userInfo={user} onLogout={onLogout} />
         ) : (
-          <Link
-            to="/login"
-            className="bg-sky-500 text-white px-4 py-1 rounded-lg hover:bg-sky-600"
-          >
-            Login
-          </Link>
+          <div className="flex items-center gap-5">
+            <FaSearch className="font-bold text-[22px]" />
+            <Link
+              onClick={() => setActivenav("Login")}
+              to="/login"
+              className="bg-sky-400  text-white px-4 py-1 rounded-full font-bold  hover:bg-sky-500 transition hover:scale-110"
+            >
+              Login
+            </Link>
+          </div>
         )}
       </div>
 

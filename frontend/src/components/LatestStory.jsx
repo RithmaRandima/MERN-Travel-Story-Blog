@@ -14,7 +14,7 @@ const LatestStory = () => {
   return (
     <div className="min-h-screen w-full bg-red300">
       <h1 className="section-heading text-center text-[60px] py-5 font-semibold">
-        Meet Best Travelers
+        Latest Stories
       </h1>
 
       <div className="relative w-[85%] mx-auto py-5">
@@ -37,7 +37,7 @@ const LatestStory = () => {
           //   480: { slidesPerView: 1 },
           // }}
         >
-          {allStories.slice(0, 4).map((story, i) => (
+          {allStories.slice(0, 5).map((story, i) => (
             <SwiperSlide key={i} className="py-2">
               <StoryCard story={story} />
             </SwiperSlide>
