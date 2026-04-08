@@ -4,49 +4,100 @@ import postModel from "../models/postModel.js";
 
 // Add Story
 export const addStory = async (req, res) => {
-  let image_filename = `${req.file.filename}`;
-  const { title, story, visitedLocation, VisitedDate } = req.body;
-  const { userId } = req.user;
-
-  if (
-    !title?.trim() ||
-    !story?.trim() ||
-    !visitedLocation?.trim() ||
-    !visitedLocation?.trim()
-  ) {
-    return res
-      .status(400)
-      .json({ error: true, message: "All Fields are required!" });
-  }
-
-  const parasedVisitedDate = new Date(parseInt(VisitedDate));
-
   try {
+    const {
+      title,
+      country,
+      category,
+      story,
+      tips,
+      distance,
+      elevationGain,
+      estimatedTime,
+      difficultyStatus,
+      thingsToDo,
+      visitedDate,
+    } = req.body;
+
+    const { userId } = req.user;
+
+    // Validate required fields
+    if (!title?.trim() || !story?.trim() || !visitedDate) {
+      return res.status(400).json({
+        success: false,
+        message: "Title, Story and Visited Date are required!",
+      });
+    }
+
+    // Parse visitedDate (if coming as timestamp)
+
+    // Validate visitedDate
+    const parsedVisitedDate = new Date(visitedDate); // use string directly
+    if (isNaN(parsedVisitedDate.getTime())) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid visitedDate",
+      });
+    }
+
+    // Handle main image
+    let mainImage = req.files?.mainImage?.[0]?.filename || null;
+
+    // Handle gallery images
+    const galleryImages = [];
+    ["image1", "image2", "image3", "image4"].forEach((key) => {
+      if (req.files?.[key]?.[0]?.filename) {
+        galleryImages.push(req.files[key][0].filename);
+      }
+    });
+
     const travelStory = new postModel({
       title,
+      country,
       story,
-      visitedLocation,
+      category,
+      tips,
+      distance,
+      elevationGain,
+      estimatedTime,
+      difficultyStatus,
+      thingsToDo,
+      visitedDate: parsedVisitedDate,
       userId,
-      image: image_filename,
-      VisitedDate: parasedVisitedDate,
+      mainImage,
+      galleryImages,
     });
 
     await travelStory.save();
-    return res
-      .status(201)
-      .json({ story: travelStory, message: "Added Successfully!" });
-  } catch (error) {
-    res.status(400).json({
-      error: true,
-      message: "Error on Server",
+
+    return res.status(201).json({
+      success: true,
+      story: travelStory,
+      message: "Added Successfully!",
     });
-    console.log("Error in addStory function!", error);
-    process.exit(1);
+  } catch (error) {
+    console.error("Error in addStory function!", error);
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
   }
 };
 
 // Get All Stories
 export const getAllStory = async (req, res) => {
+  try {
+    const travelStories = await postModel.find().populate("userId");
+
+    res.status(200).json({ success: true, stories: travelStories });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server Error" });
+    console.log("Error on getAllStory Function", error);
+  }
+};
+
+// Get All Stories by User
+export const getAllStoriesByUser = async (req, res) => {
   const { userId } = req.user;
 
   try {
@@ -56,11 +107,30 @@ export const getAllStory = async (req, res) => {
     res.status(200).json({ stories: travelStories });
   } catch (error) {
     res.status(500).json({ error: true, message: "Server Error" });
-    console.log("Error on getAllStory Function", error);
+    console.log("Error on getAllStoryByUser Function", error);
     process.exit(1);
   }
 };
 
+// get Storyby ID
+export const getStoryById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const story = await postModel.findById(id).populate("userId");
+
+    if (!story) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Story not found" });
+    }
+
+    res.status(200).json({ success: true, story });
+  } catch (error) {
+    console.log("Error in getStoryById:", error);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
 // Edit Travel Strory
 export const EditStory = async (req, res) => {
   const { id } = req.params;

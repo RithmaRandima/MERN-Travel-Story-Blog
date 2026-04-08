@@ -3,7 +3,9 @@ import {
   addStory,
   deleteStroy,
   EditStory,
+  getAllStoriesByUser,
   getAllStory,
+  getStoryById,
   updateFavouriteStatus,
 } from "../controllers/postController.js";
 import { authenticateToken } from "../utilities/utilities.js";
@@ -15,12 +17,23 @@ const postRoute = express.Router();
 postRoute.post(
   "/add-story",
   authenticateToken,
-  upload.single("image"),
+  upload.fields([
+    { name: "mainImage", maxCount: 1 },
+    { name: "image1", maxCount: 1 },
+    { name: "image2", maxCount: 1 },
+    { name: "image3", maxCount: 1 },
+    { name: "image4", maxCount: 1 },
+  ]),
   addStory,
 );
+// get all Stories
+postRoute.get("/get-all-stories", getAllStory);
 
-// get App Story
-postRoute.get("/get-all-stories", authenticateToken, getAllStory);
+// get Story by id
+postRoute.get("/get-story/:id", getStoryById);
+
+// get Story by User
+postRoute.get("/get-user-stories", authenticateToken, getAllStoriesByUser);
 
 // Update Story
 postRoute.post(

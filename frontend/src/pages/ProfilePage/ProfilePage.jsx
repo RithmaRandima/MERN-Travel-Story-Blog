@@ -9,7 +9,7 @@ const ProfilePage = () => {
   const { user } = useBlog();
   const [showAddBlog, setShowAddBlog] = useState(false);
   return (
-    <div className="relative w-full min-h-screen bg-gradient-to-b from-sky-100 via-slate-100 to-sky-100">
+    <div className="relative w-full min-h-screen bg-gradient-to-b from-sky-200 via-slate-300/70 to-sky-200">
       <Navbar />
       {/* user Profile Details */}
       <div className="w-full relative ">
@@ -34,7 +34,7 @@ const ProfilePage = () => {
         </div>
 
         {/* profile pic */}
-        <div className="absolute right-15 top-25 w-80 h-80 rounded-full bg-green-400 shadow-[1px_3px_4px_rgba(0,0,0,0.5)]">
+        <div className="absolute right-10 top-25 w-75 h-75 rounded-full bg-green-400 shadow-[1px_3px_4px_rgba(0,0,0,0.5)]">
           <img
             src={`http://localhost:5000/images/${user.profilePic}`}
             alt="Profile"
@@ -43,7 +43,7 @@ const ProfilePage = () => {
         </div>
 
         {/* cover pic */}
-        <div className="absolute right-80 top-92  w-65 h-65 rounded-full shadow-[1px_3px_4px_rgba(0,0,0,0.5)]">
+        <div className="absolute right-70 top-90  w-60 h-60 rounded-full shadow-[1px_3px_4px_rgba(0,0,0,0.5)]">
           <img
             src={`http://localhost:5000/images/${user.coverPic}`}
             alt="Profile"

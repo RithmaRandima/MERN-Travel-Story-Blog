@@ -10,6 +10,7 @@ export const BlogProvider = ({ children }) => {
   const navigate = useNavigate();
 
   const [allAuthors, setAllAuthors] = useState([]);
+  const [allStories, setAllStories] = useState([]);
   // Initialize state from localStorage
   const [token, setToken] = useState(() => localStorage.getItem("token"));
   const [user, setUser] = useState(() => {
@@ -34,7 +35,7 @@ export const BlogProvider = ({ children }) => {
     navigate("/home"); // redirect to login after logout
   };
 
-  const getAllAuthors = async (req, res) => {
+  const getAllAuthors = async () => {
     try {
       const { data } = await axiosInstance.get("/api/user/get-all-users");
 
@@ -42,18 +43,30 @@ export const BlogProvider = ({ children }) => {
         setAllAuthors(data.users);
       }
     } catch (error) {
-      console.log("Error fetching authors:", error);
+      console.log("Error fetching Authors", error);
+    }
+  };
+
+  const getAllStories = async () => {
+    try {
+      const { data } = await axiosInstance.get("/api/story/get-all-stories");
+
+      if (data?.success) {
+        setAllStories(data.stories);
+      }
+    } catch (error) {
+      console.log("Error fetching all Stories", error);
     }
   };
 
   useEffect(() => {
     getAllAuthors();
+    getAllStories();
   }, []);
-
-  console.log(allAuthors);
 
   const value = {
     allAuthors,
+    allStories,
     user,
     token,
     login,

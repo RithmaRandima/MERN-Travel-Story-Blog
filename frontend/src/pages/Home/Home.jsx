@@ -4,6 +4,8 @@ import Hero from "../../components/Hero";
 import Categories from "../../components/Categories";
 import AuthorsSection from "../../components/AuthorsSection";
 import CallToActionSection from "../../components/CallToActionSection";
+import LatestStory from "../../components/LatestStory";
+import Features from "../../components/Features";
 
 const Example = () => {
   return (
@@ -35,6 +37,7 @@ const Example = () => {
           ))}
         </div>
       </div>
+      <Features />
       {/* ⭐ FEATURED BLOG */}
       <div className="max-w-6xl mx-auto px-4 mt-12">
         <h2 className="text-2xl font-semibold mb-4">Featured Story</h2>
@@ -86,6 +89,8 @@ const Example = () => {
           ))}
         </div>
       </div>
+
+      <LatestStory />
       {/* 💬 TESTIMONIALS */}
       <div className="max-w-6xl mx-auto px-4 mt-16">
         <h2 className="text-2xl font-semibold mb-8 text-center">

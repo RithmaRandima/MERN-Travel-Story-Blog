@@ -1,15 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import PasswordInput from "../../components/PasswordInput";
-import validator from "validator";
 import axiosInstance from "../../utils/axiosinstance";
 import { IoIosAddCircle } from "react-icons/io";
 import { FaCamera } from "react-icons/fa";
 
 import defaultCoverImg from "../../assets/cities-bg.jpg";
 import { useBlog } from "../../context/Blog-Context";
-import Navbar from "../../components/Navbar";
 import DateSelector from "../../components/DateSelector";
 import Quill from "quill";
+import { toast } from "react-toastify";
 
 const AddBlog = ({ setShowAddBlog }) => {
   const editorRef = useRef(null);
@@ -20,7 +18,6 @@ const AddBlog = ({ setShowAddBlog }) => {
   const [image2, setImage2] = useState(null);
   const [image3, setImage3] = useState(null);
   const [image4, setImage4] = useState(null);
-  // const [visitedDate, setVisitedDate] = useState(null);
   const [data, setData] = useState({
     title: "",
     country: "",
@@ -39,75 +36,96 @@ const AddBlog = ({ setShowAddBlog }) => {
   const { user, token, navigate, login } = useBlog();
 
   // handelSingup Function
-  const handelSignUp = async (e) => {
+
+  const handleAddStory = async (e) => {
     e.preventDefault();
-    setError(null);
 
-    // Validation
-    // if (!profilePicture) {
-    //   setError("Please Add Profile Picture");
-    //   return;
-    // }
+    // Frontend validation for required text fields
+    if (
+      !data.title?.trim() ||
+      !data.country?.trim() ||
+      !data.story?.trim() ||
+      !data.visitedDate
+    ) {
+      toast.error(
+        "Please complete all required information before submitting!",
+      );
+      return;
+    }
 
-    // if (!coverPicture) {
-    //   setError("Please Add Cover Picture");
-    //   return;
-    // }
+    // Optional: validate visitedDate format
+    if (isNaN(new Date(data.visitedDate).getTime())) {
+      toast.error("Visited Date is invalid!");
+      return;
+    }
 
-    // if (!data.lastName.trim()) {
-    //   setError("Please Enter Last Name");
-    //   return;
-    // }
-    // if (!data.email || !validator.isEmail(data.email)) {
-    //   setError("Please Enter valid Email");
-    //   return;
-    // }
-    // if (!data.password) {
-    //   setError("Please Enter the Password");
-    //   return;
-    // }
+    // Frontend validation for images (optional, you can make some required)
+    if (!mainImage) {
+      toast.error("Please upload a Cover Image for your story!");
+      return;
+    }
+    if (!image1 || !image2 || !image3 || !image4)
+      toast.warning("Gallery Images are missing.");
 
-    // try {
-    //   Create FormData for file upload
-    //   const formData = new FormData();
-    //   formData.append("firstName", data.firstName);
-    //   formData.append("lastName", data.lastName);
-    //   formData.append("bio", data.bio || "");
-    //   formData.append("email", data.email);
-    //   formData.append("password", data.password);
+    try {
+      const formData = new FormData();
 
-    //   // Append files if they exist
-    //   if (profilePicture) formData.append("profilePic", profilePicture);
-    //   if (coverPicture) formData.append("coverPic", coverPicture);
+      formData.append("title", data.title);
+      formData.append("country", data.country);
+      formData.append("category", data.category || "");
+      formData.append("story", data.story);
+      formData.append("tips", data.tips || "");
+      formData.append("distance", data.distance || "");
+      formData.append("elevationGain", data.elevationGain || "");
+      formData.append("estimatedTime", data.estimatedTime || "");
+      formData.append("difficultyStatus", data.difficultyStatus || "");
+      formData.append("thingsToDo", data.thingsToDo || "");
+      formData.append("visitedDate", data.visitedDate);
 
-    //   // Axios request with multipart/form-data
-    //   const response = await axiosInstance.post(
-    //     "/api/user/create-account",
-    //     formData,
-    //     {
-    //       headers: {
-    //         "Content-Type": "multipart/form-data",
-    //       },
-    //     },
-    //   );
+      formData.append("mainImage", mainImage); // required
+      if (image1) formData.append("image1", image1);
+      if (image2) formData.append("image2", image2);
+      if (image3) formData.append("image3", image3);
+      if (image4) formData.append("image4", image4);
 
-    //   // Handle success
-    //   if (response.data?.accessToken) {
-    //     login(response.data.user, response.data.accessToken);
-    //     navigate("/home");
-    //   }
-    // } catch (error) {
-    //   setError(error.response?.data?.message || "Unexpected error occurred");
-    //   console.log(error);
-    // }
+      const { data: response } = await axiosInstance.post(
+        "api/story/add-story",
+        formData,
+      );
+
+      if (response && !response.error) {
+        toast.success(response.message || "Story added successfully!");
+
+        setData({
+          title: "",
+          country: "",
+          category: "",
+          story: "",
+          tips: "",
+          distance: "",
+          elevationGain: "",
+          estimatedTime: "",
+          difficultyStatus: "",
+          thingsToDo: "",
+          visitedDate: null,
+        });
+
+        setMainImage(null);
+        setImage1(null);
+        setImage2(null);
+        setImage3(null);
+        setImage4(null);
+
+        setShowAddBlog(false);
+      } else {
+        toast.error(response.message || "Failed to add story");
+      }
+    } catch (error) {
+      const msg = error.response?.data?.message || "Unexpected error occurred";
+      toast.error(msg);
+      console.error(error);
+    }
   };
-
-  console.log(data);
-  console.log(mainImage);
-  console.log(image1);
-  console.log(image2);
-  console.log(image3);
-  console.log(image4);
 
   useEffect(() => {
     if (!quillRef.current && editorRef.current) {
@@ -138,7 +156,7 @@ const AddBlog = ({ setShowAddBlog }) => {
 
         <button onClick={() => setShowAddBlog(false)}>x</button>
 
-        <form onSubmit={handelSignUp} className="">
+        <form onSubmit={handleAddStory} className="">
           {/* main Image section */}
           <div className="">
             {/* main photo */}

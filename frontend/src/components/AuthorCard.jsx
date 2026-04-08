@@ -10,7 +10,7 @@ import { FaX } from "react-icons/fa6";
 
 const AuthorCard = ({ author }) => {
   return (
-    <div className="relative bg-white w-full h-[450px] overflow-hidden rounded-[14px]">
+    <div className="relative bg-white shadow-[1px_1px_2px_rgba(0,0,0,0.2)]  w-full h-[450px] overflow-hidden rounded-[14px]">
       {/* cover image */}
       <div className="relative h-[70%] w-full bg-amber-300">
         <img

@@ -37,6 +37,10 @@
   background-position: center;
 }
 
+.section-heading {
+  font-family: "Caveat", cursive;
+}
+
 /* Hide scrollbar for Chrome, Safari */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;

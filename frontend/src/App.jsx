@@ -9,16 +9,17 @@ import Register from "./pages/Auth/Register";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import AboutAuthor from "./pages/AboutAuthor/AboutAuthor";
 import "quill/dist/quill.snow.css";
+import TravelStory from "./pages/TravelStory/TravelStory";
 const App = () => {
   return (
     <div className="">
       <Routes>
         <Route path="/" element={<Root />} />
         <Route path="/home" element={<Home />} />
-        {/* <Route path="/Profile" element={<UserStroyProfile />} /> */}
         <Route path="/Profile" element={<ProfilePage />} />
         <Route path="/aboutAuthor" element={<AboutAuthor />} />
-        <Route path="/stories/:id" element={<UserStroyProfile />} />
+        {/* <Route path="/stories/" element={<UserStroyProfile />} /> */}
+        <Route path="/stories/:id" element={<TravelStory />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Register />} />
       </Routes>
