@@ -148,37 +148,39 @@ const ProfilePage = () => {
               </div>
 
               {/* Recent Posts */}
-              <div className="bg-white rounded-2xl shadow-md py-4 px-3">
-                <h2 className="font-semibold text-lg mb-3">Recent Posts</h2>
+              {allStoriesByUser > 0 && (
+                <div className="bg-white rounded-2xl shadow-md py-4 px-3">
+                  <h2 className="font-semibold text-lg mb-3">Recent Posts</h2>
 
-                {allStoriesByUser?.slice(0, 3).map((story) => (
-                  <div
-                    key={story.id}
-                    className="w-full h-[100px] flex gap-3 border-b border-slate-300 py-3"
-                  >
-                    <img
-                      src={`http://localhost:5000/images/${story?.mainImage}`}
-                      className="h-full w-[90px] object-cover cursor-pointer"
-                      alt=""
-                    />
+                  {allStoriesByUser?.slice(0, 3).map((story) => (
+                    <div
+                      key={story.id}
+                      className="w-full h-[100px] flex gap-3 border-b border-slate-300 py-3"
+                    >
+                      <img
+                        src={`http://localhost:5000/images/${story?.mainImage}`}
+                        className="h-full w-[90px] object-cover cursor-pointer"
+                        alt=""
+                      />
 
-                    <div className="w-full h-full px-2">
-                      <p className="font-bold hover:text-sky-400">
-                        {story?.title}
-                      </p>
+                      <div className="w-[240px] h-full px-2">
+                        <p className="font-bold hover:text-sky-400">
+                          {story?.title}
+                        </p>
 
-                      <p className="text-[14px] text-slate-500 mt-[12px] flex items-center justify-between">
-                        <span className="font-semibold">
-                          {moment(story?.visitedDate).format("MMMM D, YYYY")}
-                        </span>
-                        <span className="font-extralight">
-                          {moment(story?.createdAt).fromNow()}
-                        </span>
-                      </p>
+                        <p className="text-[14px] text-slate-500 mt-[12px] flex items-center justify-between">
+                          <span className="font-semibold">
+                            {moment(story?.visitedDate).format("MMMM D, YYYY")}
+                          </span>
+                          <span className="font-extralight">
+                            {moment(story?.createdAt).fromNow()}
+                          </span>
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>

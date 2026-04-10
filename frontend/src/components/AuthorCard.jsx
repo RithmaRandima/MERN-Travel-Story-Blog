@@ -20,6 +20,7 @@ const AuthorCard = ({ author }) => {
             src={`http://localhost:5000/images/${author.coverPic}`}
             className="w-full h-full object-cover object-top"
             alt=""
+            loading="lazy"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-white via-white/50 to-transparent"></div>
         </div>

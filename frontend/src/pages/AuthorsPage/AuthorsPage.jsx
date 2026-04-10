@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import { useBlog } from "../../context/Blog-Context";
 import AuthorCard from "../../components/AuthorCard";
@@ -12,6 +12,10 @@ const AuthorsPage = () => {
     const fullName = `${author.firstName} ${author.lastName}`.toLowerCase();
     return fullName.includes(searchTerm.toLowerCase());
   });
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="relative w-full min-h-screen bg-gradient-to-b from-[#47E0FF]/20 via-white/30 to-white pb-20">
@@ -44,9 +48,9 @@ const AuthorsPage = () => {
       {/* Authors Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 w-full px-4 md:px-10 mx-auto gap-5">
         {filteredAuthors.length > 0 ? (
-          filteredAuthors
-            .slice(0, 7)
-            .map((author) => <AuthorCard key={author._id} author={author} />)
+          filteredAuthors.map((author) => (
+            <AuthorCard key={author._id} author={author} />
+          ))
         ) : (
           <p className="col-span-full text-gray-500 text-center">
             No authors found.

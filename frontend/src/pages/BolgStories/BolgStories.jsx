@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import { Link } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
@@ -18,6 +18,10 @@ const BlogListPage = () => {
       story.title?.toLowerCase().includes(searchTerm.toLowerCase()) &&
       (categoryFilter === "" || story.category === categoryFilter),
   );
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="relative w-full min-h-screen  bg-gradient-to-b from-[#47E0FF]/20 via-white/30 to-white pb-20">

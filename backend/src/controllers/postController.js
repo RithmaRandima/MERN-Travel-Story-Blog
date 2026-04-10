@@ -131,6 +131,37 @@ export const getStoryById = async (req, res) => {
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };
+
+// get Stories by UserId
+export const getStoriesByAuthorId = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // find ALL posts by userId
+    const stories = await postModel
+      .find({ userId: id })
+      .populate("userId")
+      .sort({ createdAt: -1 }); // optional: latest first
+
+    if (!stories || stories.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No stories found for this user",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      stories,
+    });
+  } catch (error) {
+    console.log("Error in getStoriesByUserId:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
 // Edit Travel Strory
 export const EditStory = async (req, res) => {
   const { id } = req.params;

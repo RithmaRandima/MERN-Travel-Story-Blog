@@ -5,6 +5,7 @@ import {
   EditStory,
   getAllStoriesByUser,
   getAllStory,
+  getStoriesByAuthorId,
   getStoryById,
   updateFavouriteStatus,
 } from "../controllers/postController.js";
@@ -34,6 +35,8 @@ postRoute.get("/get-story/:id", getStoryById);
 
 // get Story by User
 postRoute.get("/get-user-stories", authenticateToken, getAllStoriesByUser);
+
+postRoute.get("/get-stories-by-author/:id", getStoriesByAuthorId);
 
 // Update Story
 postRoute.post(
