@@ -28,7 +28,7 @@ const DateSelector = ({ date, setDate }) => {
       {/* Button */}
       <button
         type="button"
-        className="inline-flex items-center gap-2 text-[15px] font-medium text-black bg-sky-300/40 hover:bg-sky-200/70 rounded-full px-4 py-1.5 cursor-pointer"
+        className="inline-flex items-center gap-2 text-[15px] font-medium text-black bg-sky-300/50 hover:bg-sky-300/70 rounded-full px-4 py-1.5 cursor-pointer"
         onClick={() => setOpenDayPicker((prev) => !prev)}
       >
         <MdOutlineDateRange className="text-lg" />

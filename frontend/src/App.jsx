@@ -10,6 +10,9 @@ import "quill/dist/quill.snow.css";
 import TravelStory from "./pages/TravelStory/TravelStory";
 import FullDetailProfile from "./pages/ProfilePage/FullDetailProfile";
 import BolgStories from "./pages/BolgStories/BolgStories";
+import AuthorsPage from "./pages/AuthorsPage/AuthorsPage";
+import AutherProfile from "./pages/ProfilePage/AutherProfile";
+import AuthorFullDetailProfile from "./pages/ProfilePage/AuthorFullDetailProfile";
 const App = () => {
   return (
     <div className="">
@@ -20,6 +23,12 @@ const App = () => {
         <Route path="/fullProfile" element={<FullDetailProfile />} />
         <Route path="/stories" element={<BolgStories />} />
         <Route path="/stories/:id" element={<TravelStory />} />
+        <Route path="/authors" element={<AuthorsPage />} />
+        <Route path="/authors/:id" element={<AutherProfile />} />
+        <Route
+          path="/authors/AuthorFullDetailProfile/:id"
+          element={<AuthorFullDetailProfile />}
+        />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Register />} />
       </Routes>

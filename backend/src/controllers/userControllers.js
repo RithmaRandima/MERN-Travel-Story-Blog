@@ -5,28 +5,42 @@ import validator from "validator";
 
 // create Account
 export const createAccount = async (req, res) => {
-  const { firstName, lastName, email, password, bio } = req.body;
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    aboutMe,
+    myStory,
+    myPerspective,
+  } = req.body;
+
   try {
     if (
       !firstName?.trim() ||
-      !lastName.trim() ||
+      !lastName?.trim() ||
       !email?.trim() ||
       !password?.trim()
     ) {
-      return res.status(400).json({ message: "All fields required" });
+      return res
+        .status(400)
+        .json({ success: false, message: "All fields required" });
     }
 
-    const existsUser = await userModel.findOne({ email });
+    const cleanEmail = email.trim().toLowerCase();
+    const existsUser = await userModel.findOne({ email: cleanEmail });
+
     if (existsUser) {
       return res
         .status(400)
-        .json({ error: true, message: "User already exists!" });
+        .json({ success: false, message: "User already exists!" });
     }
+
     // email check
     if (!validator.isEmail(email)) {
       return res
         .status(400)
-        .json({ error: true, message: "Please enter valid Email!" });
+        .json({ success: false, message: "Please enter valid Email!" });
     }
 
     // password check
@@ -40,7 +54,7 @@ export const createAccount = async (req, res) => {
       })
     ) {
       return res.status(400).json({
-        error: true,
+        success: false,
         message:
           "Password must be at least 8 characters and include uppercase, lowercase, number and symbol",
       });
@@ -52,22 +66,40 @@ export const createAccount = async (req, res) => {
     let profilePic = req.files?.profilePic?.[0]?.path || "";
     let coverPic = req.files?.coverPic?.[0]?.path || "";
 
-    // Replace backslashes with forward slashes (Windows fix)
-    profilePic = profilePic.replace(/\\/g, "/");
-    coverPic = coverPic.replace(/\\/g, "/");
+    // Function to format image paths
+    const formatPath = (filePath) => {
+      if (!filePath) return "";
+      let formatted = filePath.replace(/\\/g, "/");
+      formatted = formatted.replace(/^uploads\//, "");
+      return formatted;
+    };
 
-    // Remove the "uploads/" prefix if your static route is /images
-    profilePic = profilePic.replace(/^uploads\//, "");
-    coverPic = coverPic.replace(/^uploads\//, "");
+    // Format profile & cover pics
+    profilePic = formatPath(profilePic);
+    coverPic = formatPath(coverPic);
+
+    // Handle gallery images
+    let userImages = [];
+    ["userImage1", "userImage2"].forEach((key) => {
+      if (req.files?.[key]?.[0]?.path) {
+        userImages.push(req.files[key][0].path);
+      }
+    });
+
+    // Format gallery images
+    userImages = userImages.map((img) => formatPath(img));
 
     const user = new userModel({
       firstName,
       lastName,
-      email,
+      email: cleanEmail,
       password: hashedPassword,
       profilePic,
       coverPic,
-      bio,
+      aboutMe,
+      myStory,
+      myPerspective,
+      userImages,
     });
 
     await user.save();
@@ -81,17 +113,17 @@ export const createAccount = async (req, res) => {
     );
 
     res.status(201).json({
-      error: false,
-      user: user,
+      success: true,
+      user,
       accessToken,
-      message: "Registration Successfull!",
+      message: "Registration Successful!",
     });
   } catch (error) {
-    res.status(400).json({
-      error: true,
+    console.log("Error in createAccount function!", error);
+    res.status(500).json({
+      success: false,
       message: "Error on Server",
     });
-    console.log("Error in createAccount function!", error);
   }
 };
 
@@ -166,5 +198,31 @@ export const getAllUsers = async (req, res) => {
       message: "Error on Server",
     });
     console.log("Error in getAllUsers function!", error);
+  }
+};
+
+export const getUserById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await userModel.findById(id);
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "User Cant find",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      user,
+      message: "User Successfully Fetched",
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: error,
+      message: "Error on Server",
+    });
+    console.log("Error in getUserById function!", error);
   }
 };

@@ -6,7 +6,9 @@ const userSchema = new Schema(
     lastName: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    bio: { type: String, default: "" },
+    aboutMe: { type: String, default: "" },
+    myStory: { type: String, default: "" },
+    myPerspective: { type: String, default: "" },
     profilePic: {
       type: String, // store image path or URL
       default: "",
@@ -15,6 +17,7 @@ const userSchema = new Schema(
       type: String, // store image path or URL
       default: "",
     },
+    userImages: { type: [String], default: [] }, // image1 - image4
   },
   { timestamps: true },
 );

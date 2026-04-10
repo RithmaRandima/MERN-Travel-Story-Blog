@@ -2,6 +2,7 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../utils/axiosinstance";
+import { toast } from "react-toastify";
 // Create context
 const BlogContext = createContext();
 
@@ -11,6 +12,7 @@ export const BlogProvider = ({ children }) => {
 
   const [allAuthors, setAllAuthors] = useState([]);
   const [allStories, setAllStories] = useState([]);
+  const [allStoriesByUser, setAllStoriesByUser] = useState([]);
   // Initialize state from localStorage
   const [token, setToken] = useState(() => localStorage.getItem("token"));
   const [user, setUser] = useState(() => {
@@ -33,8 +35,11 @@ export const BlogProvider = ({ children }) => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     navigate("/home"); // redirect to login after logout
+    toast.info("You have logged out. Safe travels until next time! 🌍");
+    window.scrollTo(0, 0);
   };
 
+  // get All Authors
   const getAllAuthors = async () => {
     try {
       const { data } = await axiosInstance.get("/api/user/get-all-users");
@@ -47,6 +52,7 @@ export const BlogProvider = ({ children }) => {
     }
   };
 
+  // get All Stories
   const getAllStories = async () => {
     try {
       const { data } = await axiosInstance.get("/api/story/get-all-stories");
@@ -59,10 +65,25 @@ export const BlogProvider = ({ children }) => {
     }
   };
 
+  // Get all stories by logged-in user
+  const getAllStoriesByUser = async () => {
+    if (!token) return; // user not logged in
+    try {
+      const { data } = await axiosInstance.get("/api/story/get-user-stories", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (data?.stories) setAllStoriesByUser(data.stories);
+    } catch (error) {
+      console.log("Error fetching stories by user", error);
+    }
+  };
+
   useEffect(() => {
     getAllAuthors();
     getAllStories();
-  }, []);
+    if (user) getAllStoriesByUser();
+  }, [user]);
 
   const value = {
     allAuthors,
@@ -72,6 +93,8 @@ export const BlogProvider = ({ children }) => {
     login,
     logout,
     navigate,
+
+    allStoriesByUser,
   };
 
   return <BlogContext.Provider value={value}>{children}</BlogContext.Provider>;

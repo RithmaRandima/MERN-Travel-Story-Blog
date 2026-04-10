@@ -24,11 +24,22 @@ import {
 } from "react-icons/fa";
 import { BsFillStopwatchFill } from "react-icons/bs";
 import { FaX } from "react-icons/fa6";
+import { useBlog } from "../../context/Blog-Context";
+import { toast } from "react-toastify";
 
 const TravelStory = () => {
   const { id } = useParams();
   const [story, setStory] = useState({});
+  const [reviews, setReviews] = useState([]);
 
+  const { user, token } = useBlog();
+
+  console.log("user", user);
+
+  const [rating, setRating] = useState("");
+  const [comment, setComment] = useState("");
+
+  // fetch travel Story
   useEffect(() => {
     const fetchStoryByID = async () => {
       try {
@@ -42,10 +53,52 @@ const TravelStory = () => {
     // window.scrollTo(0, 0);
   }, [id]);
 
+  // Fetch Comments By ID
+  const fetchCommentsByID = async () => {
+    try {
+      const { data } = await axiosInstance.get(`/api/comment/by-post/${id}`);
+      if (data?.success) setReviews(data.comments);
+    } catch (error) {
+      console.log("Error fetching Story", error);
+    }
+  };
+  useEffect(() => {
+    fetchCommentsByID();
+    // window.scrollTo(0, 0);
+  }, [id]);
+
+  // Add Comment
+  const handelAddComment = async (e) => {
+    e.preventDefault();
+
+    if (!comment.trim()) return toast.error("Please Add Review");
+    if (!rating.trim()) return toast.error("Please Add Rating");
+    try {
+      const { data } = await axiosInstance.post(
+        `/api/comment/add-comment/${id}`,
+        {
+          content: comment,
+          rating,
+          userId: user?._id,
+        },
+      );
+      if (data?.success) {
+        toast.success(data.message || "Comment added successfully!");
+        fetchCommentsByID();
+        setComment("");
+        setRating(" ");
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Unexpected error occurred");
+      console.log("Error fetching Story", error);
+    }
+  };
   const coverImages = [
     story?.mainImage,
     ...(story?.galleryImages?.slice(0, 4) || []),
   ].filter(Boolean);
+
+  console.log(reviews);
 
   return (
     <div className="relative">
@@ -179,22 +232,24 @@ const TravelStory = () => {
         </div>
 
         {/* AUTHOR */}
-        <div className="bg-white py-6 mt-16 shadow-md w-[550px] mx-auto rounded-lg flex">
+        <div className="bg-red-400 py-3 px-4 mt-16 shadow-md w-[600px] mx-auto rounded-lg flex">
           <img
-            className="w-20 h-20 rounded-full object-cover"
+            className="w-16 h-16 rounded-full object-cover"
             src={`http://localhost:5000/images/${story?.userId?.profilePic}`}
             alt=""
           />
 
-          <div className="ml-5">
+          <div className="ml-5 w-[calc(600px-100px)]">
             <p className="font-bold">
               {story?.userId?.firstName} {story?.userId?.lastName}
             </p>
             <p className="text-sm text-gray-500">{story?.userId?.email}</p>
 
-            <p className="mt-2 text-sm">{story?.userId?.bio}</p>
+            <p className="mt-2 text-sm">
+              {story?.userId?.aboutMe?.split(".").slice(0, 3).join(".") + "."}
+            </p>
 
-            <div className="flex gap-4 mt-3">
+            <div className="flex gap-4 mt-4">
               <FaLinkedinIn />
               <FaX />
               <FaYoutube />
@@ -210,16 +265,101 @@ const TravelStory = () => {
             Comments (3)
           </div>
 
-          <div className="bg-white p-6 mt-6 shadow rounded-lg">
-            <p className="text-lg font-semibold mb-2">Leave a Comment</p>
-            <p>
-              You must be{" "}
-              <Link to="/login" className="text-blue-500">
-                logged in
-              </Link>{" "}
-              to comment.
-            </p>
+          {/* comment display */}
+          <div className="bg-white shadow rounded-lg mt-6 ">
+            {reviews?.map((review) => (
+              <div className="w-full flex items-start">
+                <img
+                  src={`http://localhost:5000/images/${review?.userId?.profilePic}`}
+                  alt=""
+                  className="w-10 h-10 rounded-full object-cover object-top"
+                />
+
+                <div>
+                  <p>
+                    {review?.userId?.firstName} {review?.userId?.lastName}
+                  </p>
+                  <p>{review?.createdAt}</p>
+                  <p>{review?.content}</p>
+                </div>
+              </div>
+            ))}
           </div>
+
+          {/* comment form section */}
+          {!token ? (
+            <div className="bg-white p-6 mt-6 shadow rounded-lg">
+              <p className="text-lg font-semibold mb-2">Leave a Comment</p>
+              <p>
+                You must be{" "}
+                <Link to="/login" className="text-blue-500">
+                  logged in
+                </Link>{" "}
+                to comment.
+              </p>
+            </div>
+          ) : (
+            <div className="bg-white shadow rounded-lg mt-6 ">
+              <form
+                onSubmit={handelAddComment}
+                className="w-full mx-auto shadow-lg rounded-2xl p-4 space-y-5 hover:ring-2 hover:ring-indigo-400"
+              >
+                {/* AUTHOR */}
+                <div className=" flex items-center">
+                  <img
+                    className="w-12 h-12 rounded-full object-cover object-top"
+                    src={`http://localhost:5000/images/${user?.profilePic}`}
+                    alt=""
+                  />
+
+                  <div className="ml-1">
+                    <p className="font-semibold text-[14px]">
+                      {user?.firstName} {user?.lastName}
+                    </p>
+                    <p className="text-[11px] text-gray-500">{user?.email}</p>
+                  </div>
+                </div>
+
+                {/* Comment Input */}
+                <div>
+                  <textarea
+                    placeholder="Write your comment..."
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    rows="4"
+                    className="-mt-4 w-full p-3 focus:outline-none"
+                  ></textarea>
+                </div>
+
+                {/* Submit Button  and rating*/}
+                <div className="flex items-end gap-3 -mt-5 justify-end">
+                  {/* Rating Input */}
+                  <div className="lex">
+                    <label className="text-gray-600 block mb-2 w-fit">
+                      Rating (1–5)
+                    </label>
+                    <input
+                      type="number"
+                      min="1"
+                      max="5"
+                      placeholder="Add Rating"
+                      value={rating}
+                      onChange={(e) => setRating(e.target.value)}
+                      className="w-[120px] text-[14px] border border-gray-300 rounded-lg py-2.5 pl-3 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                    />
+                  </div>
+
+                  {/* Submit Button */}
+                  <button
+                    type="submit"
+                    className="w-fit text-[14px] text-white font-semibold py-2.5 rounded-full px-5 bg-black hover:scale-105 transition"
+                  >
+                    Submit Review
+                  </button>
+                </div>
+              </form>
+            </div>
+          )}
         </div>
       </div>
     </div>

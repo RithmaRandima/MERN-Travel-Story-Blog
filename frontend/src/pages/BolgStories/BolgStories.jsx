@@ -7,36 +7,6 @@ import { useBlog } from "../../context/Blog-Context";
 import AuthorCard from "../../components/AuthorCard";
 import StoryCard from "../../components/StoryCard";
 
-const blogs = [
-  {
-    id: 1,
-    title: "The Rise of Industrial Design",
-    excerpt:
-      "Exploring the aesthetics and functionality of industrial-style architecture...",
-    category: "Design",
-    link: "/blog/industrial-design",
-    image: "/images/blog1.jpg",
-  },
-  {
-    id: 2,
-    title: "Urban Living in Modern Cities",
-    excerpt:
-      "How contemporary urban spaces are transforming the way we live and work...",
-    category: "Urbanism",
-    link: "/blog/urban-living",
-    image: "/images/blog2.jpg",
-  },
-  {
-    id: 3,
-    title: "Sustainable Materials in Construction",
-    excerpt:
-      "A look at eco-friendly materials shaping the industrial design sector...",
-    category: "Sustainability",
-    link: "/blog/sustainable-materials",
-    image: "/images/blog3.jpg",
-  },
-];
-
 const BlogListPage = () => {
   const { allStories } = useBlog();
 

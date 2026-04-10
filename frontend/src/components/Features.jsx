@@ -1,6 +1,8 @@
 import React, { useRef } from "react";
 import { useBlog } from "../context/Blog-Context";
 import StoryCard from "./StoryCard";
+import FeatureBox from "./FeatureBox";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
 const Features = () => {
   const { allStories } = useBlog();
@@ -18,7 +20,7 @@ const Features = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-red300">
+    <div className="min-h-screen w-full">
       <h1 className="section-heading text-center text-[60px] py-6 font-semibold">
         Meet Best Travelers
       </h1>
@@ -27,22 +29,22 @@ const Features = () => {
         {/* Left Button */}
         <button
           onClick={() => scroll("left")}
-          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-black/50 text-white px-4 py-2"
+          className="absolute left-7 top-1/2 text-[50px] h-13 w-13 rounded-full flex justify-center items-center  -translate-y-1/2 z-10 bg-white text-black hover:scale-105 transition"
         >
-          ◀
+          <MdKeyboardArrowLeft />
         </button>
 
         {/* Slider */}
         <div
           ref={sliderRef}
-          className="flex gap-6 overflow-x-scroll scroll-smooth scrollbar-hide"
+          className="flex gap-6 overflow-x-scroll scroll-smooth scrollbar-hide p-5 px-7"
         >
           {allStories.slice(0, 8).map((story, i) => (
             <div
               key={i}
               className="min-w-[300px] flex-shrink-0 transition-transform duration-300 hover:scale-105"
             >
-              <StoryCard story={story} />
+              <FeatureBox story={story} />
             </div>
           ))}
         </div>
@@ -50,9 +52,9 @@ const Features = () => {
         {/* Right Button */}
         <button
           onClick={() => scroll("right")}
-          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-black/50 text-white px-4 py-2"
+          className="absolute right-3 top-1/2 text-[50px] h-13 w-13 rounded-full flex justify-center items-center  -translate-y-1/2 z-10 bg-white text-black hover:scale-105 transition"
         >
-          ▶
+          <MdKeyboardArrowRight />
         </button>
       </div>
     </div>

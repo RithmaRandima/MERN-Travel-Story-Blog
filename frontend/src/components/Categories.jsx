@@ -6,6 +6,7 @@ import desert from "../assets/desert-bg.jpg";
 import lake from "../assets/lake-bg.jpg";
 import land from "../assets/landmark-bg.jpg";
 import mountain from "../assets/mountain-bg.jpg";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
 const categoryData = [
   { name: "Beach", image: beach },
@@ -46,9 +47,9 @@ const Categories = () => {
       <div className="flex items-center gap-2 ">
         <button
           onClick={prev}
-          className=" text-white px-3 py-1 rounded hover:bg-sky-600"
+          className=" text-black px-1 py-1 rounded-full hover:bg-sky-400/20 text-[30px]"
         >
-          ◀
+          <MdKeyboardArrowLeft />
         </button>
 
         <div className="flex overflow-hidden w-full gap-4">
@@ -71,9 +72,9 @@ const Categories = () => {
 
         <button
           onClick={next}
-          className=" text-white px-3 py-1 rounded hover:bg-sky-600"
+          className=" text-black px-1 py-1 rounded-full hover:bg-sky-400/20 text-[30px]"
         >
-          ▶
+          <MdKeyboardArrowRight />
         </button>
       </div>
     </div>

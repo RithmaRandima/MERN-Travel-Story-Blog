@@ -6,6 +6,7 @@ import cors from "cors";
 import connectDB from "./config/db.js";
 import userRoute from "./routes/userRoutes.js";
 import postRoute from "./routes/postRouters.js";
+import commentRouter from "./routes/commentRouter.js";
 import path from "node:path";
 import { fileURLToPath } from "url";
 
@@ -19,6 +20,7 @@ app.use(cors());
 
 app.use("/api/user", userRoute);
 app.use("/api/story", postRoute);
+app.use("/api/comment", commentRouter);
 app.use("/images", express.static("uploads"));
 
 const PORT = process.env.PORT || 5000;

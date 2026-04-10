@@ -16,11 +16,11 @@ const StoryCard = ({ story }) => {
   console.log(story);
   return (
     <div className="relative w-full mx-auto shadow-[1px_2px_2px_rgba(0,0,0,0.2)] h-[530px] overflow-hidden rounded-[14px]">
-      <Link to={`/stories/${story._id}`}>
+      <Link to={`/stories/${story?._id}`}>
         {/* cover image */}
         <div className="relative h-[100%] w-full">
           <img
-            src={`http://localhost:5000/images/${story.mainImage}`}
+            src={`http://localhost:5000/images/${story?.mainImage}`}
             className="w-full h-full object-cover object-top"
             alt=""
           />
@@ -41,7 +41,7 @@ const StoryCard = ({ story }) => {
 
             {/* date */}
             <p className="mt-1 mb-2 text-[12px] font-bold">
-              {moment(story.visitedDate).format("MMMM D, YYYY")}
+              {moment(story?.visitedDate).format("MMMM D, YYYY")}
             </p>
 
             {/* category */}
@@ -56,7 +56,7 @@ const StoryCard = ({ story }) => {
           {/* profile details */}
           <div className="flex items-center gap-2">
             <img
-              src={`http://localhost:5000/images/${story.userId.profilePic}`}
+              src={`http://localhost:5000/images/${story?.userId?.profilePic}`}
               className="w-11 h-11 border-2 border-white object-cover object-top rounded-full"
               alt=""
             />

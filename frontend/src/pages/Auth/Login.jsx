@@ -111,10 +111,10 @@ const Login = () => {
               <span className="font-semibold">Login with Google</span>
             </p>
 
-            <p className=" text-white tracking-[1px] mt-5 text-center">
+            <p className=" text-white tracking-[1px] text-[14px]  mt-5 text-center">
               Are You new?{" "}
               <span
-                className="underline cursor-pointer"
+                className="underline cursor-pointer font-semibold"
                 onClick={() => navigate("/signup")}
               >
                 Create an Account

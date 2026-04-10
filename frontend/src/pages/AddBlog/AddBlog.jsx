@@ -4,10 +4,10 @@ import { IoIosAddCircle } from "react-icons/io";
 import { FaCamera } from "react-icons/fa";
 
 import defaultCoverImg from "../../assets/cities-bg.jpg";
-import { useBlog } from "../../context/Blog-Context";
 import DateSelector from "../../components/DateSelector";
 import Quill from "quill";
 import { toast } from "react-toastify";
+import { FaXmark } from "react-icons/fa6";
 
 const AddBlog = ({ setShowAddBlog }) => {
   const editorRef = useRef(null);
@@ -31,9 +31,6 @@ const AddBlog = ({ setShowAddBlog }) => {
     thingsToDo: "",
     visitedDate: null,
   });
-  const [error, setError] = useState(null);
-
-  const { user, token, navigate, login } = useBlog();
 
   // handelSingup Function
 
@@ -117,6 +114,7 @@ const AddBlog = ({ setShowAddBlog }) => {
         setImage4(null);
 
         setShowAddBlog(false);
+        window.scrollTo(0, 0);
       } else {
         toast.error(response.message || "Failed to add story");
       }
@@ -146,16 +144,20 @@ const AddBlog = ({ setShowAddBlog }) => {
   }, []);
 
   return (
-    <div className="absolute top-15 bottom-0  w-full min-h-screen  bg-black/90">
+    <div className="absolute z-300 top-15 bottom-0  w-full min-h-screen  bg-black/90">
       {/* go back Button */}
-      <div className="scrollbar-hide bg-white h-full w-[50%] float-end overflow-y-scroll  pb-20">
-        <h1 className="text-right font-bold text-[25px] py-6 pr-6">
+      <div className="scrollbar-hide bg-white h-full w-[50%] float-end overflow-y-scroll pb-7">
+        <h1 className="text-right font-bold text-[25px] py-6 pr-6 mt-7">
           Tell Your{" "}
-          <span className="text-sky-300 font-extrabold text-[30px]">Story</span>
+          <span className="text-sky-500 font-extrabold text-[30px]">Story</span>
         </h1>
 
-        <button onClick={() => setShowAddBlog(false)}>x</button>
-
+        <button
+          onClick={() => setShowAddBlog(false)}
+          className="absolute  top-4 right-4 p-2 rounded-full bg-white shadow-lg hover:bg-red-100 hover:scale-110 transition-all duration-200"
+        >
+          <FaXmark className="text-gray-700 text-[20px]" />
+        </button>
         <form onSubmit={handleAddStory} className="">
           {/* main Image section */}
           <div className="">
@@ -257,17 +259,23 @@ const AddBlog = ({ setShowAddBlog }) => {
                     }))
                   }
                 >
-                  <option value="">Select Difficulty</option>
-                  <option value="easy">Easy</option>
-                  <option value="medium">Medium</option>
-                  <option value="hard">Hard</option>
+                  <option value="">Select Category</option>
+                  <option value="Beach">Beach</option>
+                  <option value="City">City</option>
+                  <option value="Forest">Forest</option>
+                  <option value="Desert">Desert</option>
+                  <option value="Lake">Lake</option>
+                  <option value="Landmark">Landmark</option>
+                  <option value="Mountain">Mountain</option>
                 </select>
               </div>
             </div>
 
             {/* Story */}
             <div className="w-full">
-              <p className="text-[20px] font-bold mt-5 mb-3">Tell Your Story</p>
+              <p className="text-[20px] font-bold mt-5 mb-3">
+                Share Your Travel Story
+              </p>
               <div className="w-full h-74 pb-16 sm:pb-10 pt-2 relative">
                 <div ref={editorRef}></div>
               </div>
@@ -509,8 +517,11 @@ const AddBlog = ({ setShowAddBlog }) => {
 
             {/* image section */}
 
-            <button className="btn-primary" type="submit">
-              CREATE ACCOUNT
+            <button
+              className="rounded-full mt-10 bg-sky-500 text-white text-[17px] tracking-wide py-3 px-10 font-semibold shadow-md hover:bg-sky-600 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 self-center"
+              type="submit"
+            >
+              Add Your Story
             </button>
           </div>
         </form>

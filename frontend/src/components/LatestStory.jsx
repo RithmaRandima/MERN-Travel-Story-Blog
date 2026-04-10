@@ -19,8 +19,8 @@ const LatestStory = () => {
 
       <div className="relative w-[85%] mx-auto py-5">
         {/* Custom Buttons */}
-        <div className="swiper-button-prev bg-red-400 !text-white !left-[-50px]" />
-        <div className="swiper-button-next bg-red-400 !text-white !right-[-50px]" />
+        <div className="swiper-button-prev !text-black  !left-[-50px]" />
+        <div className="swiper-button-next  !text-black !right-[-50px]" />
 
         <Swiper
           modules={[Navigation, Autoplay]}
