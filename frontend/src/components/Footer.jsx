@@ -3,54 +3,78 @@ import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa6";
 
 const Footer = () => {
   return (
-    <div>
-      <footer className="bg-gray-900 text-gray-300 py-10">
-        <div className="max-w-6xl mx-auto px-4 grid md:grid-cols-3 gap-8">
-          {/* Logo / About */}
-          <div>
-            <h3 className="text-xl font-bold text-white">TravelBlog</h3>
-            <p className="mt-3 text-sm">
-              Discover new destinations, read inspiring stories, and share your
-              travel experiences with the world.
-            </p>
-          </div>
+    <footer className="bg-white border-t border-gray-200 text-gray-600 pt-14 pb-8">
+      <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-10">
+        {/* Brand */}
+        <div>
+          <h3 className="text-2xl font-bold text-gray-900">
+            Wonder<span className="text-sky-500">Ink</span>
+          </h3>
 
-          {/* Links */}
-          <div>
-            <h4 className="font-semibold text-white mb-3">Quick Links</h4>
-            <ul className="space-y-2 text-sm">
-              <li className="hover:text-white cursor-pointer">Home</li>
-              <li className="hover:text-white cursor-pointer">Blogs</li>
-              <li className="hover:text-white cursor-pointer">Categories</li>
-              <li className="hover:text-white cursor-pointer">Contact</li>
-            </ul>
-          </div>
-
-          {/* Social */}
-          <div>
-            <h4 className="font-semibold text-white mb-3">Follow Us</h4>
-            <div className="flex gap-4 text-sky-600">
-              <FaFacebook
-                size={20}
-                className="cursor-pointer hover:text-sky-800"
-              />
-              <FaInstagram
-                size={20}
-                className="cursor-pointer hover:text-pink-500"
-              />
-              <FaTwitter
-                size={20}
-                className="cursor-pointer hover:text-blue-400"
-              />
-            </div>
-          </div>
+          <p className="mt-4 text-sm leading-relaxed text-gray-500">
+            A travel journal where stories meet destinations. Discover hidden
+            places, unforgettable journeys, and inspiration from around the
+            world.
+          </p>
         </div>
 
-        <div className="text-center text-sm mt-8 text-gray-500">
-          © {new Date().getFullYear()} TravelBlog. All rights reserved.
+        {/* Explore */}
+        <div>
+          <h4 className="text-gray-900 font-semibold mb-4">Explore</h4>
+
+          <ul className="space-y-3 text-sm">
+            {["Home", "Stories", "Destinations", "Categories", "About"].map(
+              (item) => (
+                <li
+                  key={item}
+                  className="hover:text-sky-500 transition-colors cursor-pointer"
+                >
+                  {item}
+                </li>
+              ),
+            )}
+          </ul>
         </div>
-      </footer>
-    </div>
+
+        {/* Connect */}
+        <div>
+          <h4 className="text-gray-900 font-semibold mb-4">Connect</h4>
+
+          <p className="text-sm text-gray-500 mb-4">
+            Follow WonderInk for fresh travel stories and inspiration.
+          </p>
+
+          <div className="flex gap-4">
+            <a
+              href="#"
+              className="p-2 rounded-full border border-gray-200 hover:bg-sky-50 hover:border-sky-400 transition"
+            >
+              <FaFacebook className="text-sky-500" size={18} />
+            </a>
+
+            <a
+              href="#"
+              className="p-2 rounded-full border border-gray-200 hover:bg-sky-50 hover:border-sky-400 transition"
+            >
+              <FaInstagram className="text-sky-500" size={18} />
+            </a>
+
+            <a
+              href="#"
+              className="p-2 rounded-full border border-gray-200 hover:bg-sky-50 hover:border-sky-400 transition"
+            >
+              <FaTwitter className="text-sky-500" size={18} />
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom */}
+      <div className="mt-12 border-t border-gray-200 pt-6 text-center text-xs text-gray-400">
+        © {new Date().getFullYear()} WonderInk. Crafted with stories from around
+        the world.
+      </div>
+    </footer>
   );
 };
 
