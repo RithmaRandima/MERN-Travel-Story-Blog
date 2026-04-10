@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import Navbar from "../../components/Navbar";
 import { useBlog } from "../../context/Blog-Context";
 import { Link } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
-import AddBlog from "../AddBlog/AddBlog";
 import SubscribeNowSection from "../../components/SubscribeNowSection";
 import {
   FaFacebook,
@@ -15,6 +14,10 @@ import {
 import Footer from "../../components/Footer";
 
 const FullDetailProfile = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const { user } = useBlog();
   return (
     <div className="relative w-full min-h-screen bg-gradient-to-b from-[#47E0FF]/20 via-[#7BE8FF]/30 to-[#7BE8FF]/30">

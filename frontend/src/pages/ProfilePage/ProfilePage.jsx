@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import { useBlog } from "../../context/Blog-Context";
 import { Link } from "react-router-dom";
@@ -28,6 +28,10 @@ const ProfilePage = () => {
   const filteredStories = selectedCategory
     ? allStoriesByUser?.filter((story) => story.category === selectedCategory)
     : allStoriesByUser;
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="relative w-full min-h-screen bg-gradient-to-b from-[#47E0FF]/20 via-[#7BE8FF]/30 to-[#7BE8FF]/30">
@@ -118,9 +122,9 @@ const ProfilePage = () => {
                   {/* All */}
                   <button
                     onClick={() => setSelectedCategory("")}
-                    className={`px-3 py-1 rounded-full border transition ${
+                    className={`px-5 py-1 rounded-full border transition ${
                       selectedCategory === ""
-                        ? "bg-blue-500 text-white"
+                        ? "bg-sky-400 text-white"
                         : "bg-gray-100 hover:bg-blue-100"
                     }`}
                   >

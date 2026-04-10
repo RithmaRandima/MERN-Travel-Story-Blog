@@ -8,8 +8,11 @@ import DateSelector from "../../components/DateSelector";
 import Quill from "quill";
 import { toast } from "react-toastify";
 import { FaXmark } from "react-icons/fa6";
+import { useBlog } from "../../context/Blog-Context";
 
 const AddBlog = ({ setShowAddBlog }) => {
+  const { getAllStories, getAllStoriesByUser } = useBlog();
+
   const editorRef = useRef(null);
   const quillRef = useRef(null);
 
@@ -112,6 +115,9 @@ const AddBlog = ({ setShowAddBlog }) => {
         setImage2(null);
         setImage3(null);
         setImage4(null);
+
+        await getAllStories();
+        await getAllStoriesByUser();
 
         setShowAddBlog(false);
         window.scrollTo(0, 0);
@@ -422,7 +428,7 @@ const AddBlog = ({ setShowAddBlog }) => {
                     </label>
                     <input
                       type="text"
-                      placeholder="First Name"
+                      placeholder="e.g. 4.5 km return – total trip distance"
                       className="register-input-box"
                       value={data?.distance}
                       onChange={(e) => {
@@ -441,7 +447,7 @@ const AddBlog = ({ setShowAddBlog }) => {
                     </label>
                     <input
                       type="text"
-                      placeholder="First Name"
+                      placeholder="e.g. 100 m"
                       className="register-input-box"
                       value={data?.elevationGain}
                       onChange={(e) => {
@@ -463,7 +469,7 @@ const AddBlog = ({ setShowAddBlog }) => {
                     </label>
                     <input
                       type="text"
-                      placeholder="First Name"
+                      placeholder="e.g. 1hr 10min"
                       className="register-input-box"
                       value={data?.estimatedTime}
                       onChange={(e) => {

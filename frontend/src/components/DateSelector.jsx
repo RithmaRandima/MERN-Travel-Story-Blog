@@ -43,20 +43,18 @@ const DateSelector = ({ date, setDate }) => {
             animate={{ opacity: 1, y: 5 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.25 }}
-            className="absolute top-full right-0 mt-2 w-[350px] rounded-lg shadow-lg z-50"
+            className="absolute top-full right-0 mt-2 w-[350px] bg-red-300 rounded-lg shadow-lg z-50"
           >
             <DayPicker
-              className="p-5 bg-white shadow-[1px_2px_5px_rgba(0,0,0,0.2)] rounded-lg"
-              captionLayout="dropdown-buttons"
+              className="custom-daypicker p-5 bg-white shadow rounded-lg w-full"
+              style={{ width: "350px" }}
               mode="single"
               selected={date}
               onSelect={(selectedDate) => {
-                if (!selectedDate) return; // 🔥 prevent undefined bug
-
-                setDate(selectedDate); // update parent state
-                setOpenDayPicker(false); // close picker after select
+                if (!selectedDate) return;
+                setDate(selectedDate);
+                setOpenDayPicker(false);
               }}
-              pagedNavigation // ✅ fixed typo
             />
           </motion.div>
         )}

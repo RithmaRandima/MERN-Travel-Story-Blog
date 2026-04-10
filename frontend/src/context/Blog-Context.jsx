@@ -93,8 +93,9 @@ export const BlogProvider = ({ children }) => {
     login,
     logout,
     navigate,
-
     allStoriesByUser,
+    getAllStories,
+    getAllStoriesByUser,
   };
 
   return <BlogContext.Provider value={value}>{children}</BlogContext.Provider>;
