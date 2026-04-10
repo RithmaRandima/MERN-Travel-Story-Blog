@@ -7,12 +7,7 @@ import "swiper/css";
 import "swiper/css/parallax";
 import "swiper/css/navigation";
 import Navbar from "../../components/Navbar";
-import {
-  GiWorld,
-  GiPathDistance,
-  GiHiking,
-  GiJumpAcross,
-} from "react-icons/gi";
+import { GiWorld, GiPathDistance, GiHiking } from "react-icons/gi";
 import moment from "moment";
 import { PiMapPinAreaFill } from "react-icons/pi";
 import {
@@ -23,7 +18,7 @@ import {
   FaYoutube,
 } from "react-icons/fa";
 import { BsFillStopwatchFill } from "react-icons/bs";
-import { FaX } from "react-icons/fa6";
+import { FaPersonRunning, FaX } from "react-icons/fa6";
 import { useBlog } from "../../context/Blog-Context";
 import { toast } from "react-toastify";
 
@@ -50,7 +45,7 @@ const TravelStory = () => {
       }
     };
     fetchStoryByID();
-    // window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
   }, [id]);
 
   // Fetch Comments By ID
@@ -64,7 +59,6 @@ const TravelStory = () => {
   };
   useEffect(() => {
     fetchCommentsByID();
-    // window.scrollTo(0, 0);
   }, [id]);
 
   // Add Comment
@@ -176,25 +170,25 @@ const TravelStory = () => {
           <h1 className="text-[26px] font-semibold mb-4">Tips For Visiting</h1>
           <p className="text-[16px]">{story.tips}</p>
 
-          <div className="mt-10 grid grid-cols-2 gap-10">
+          <div className="mt-10 grid grid-cols-2 gap-10 w-[70%]">
             <TipBox
               value={`${story.distance} km`}
-              logo={<GiPathDistance className="text-[40px]" />}
+              logo={<GiPathDistance className="text-[70px]" />}
               topic="DISTANCE"
             />
             <TipBox
               value={`${story.elevationGain} m`}
-              logo={<GiHiking className="text-[40px]" />}
+              logo={<GiHiking className="text-[70px]" />}
               topic="ELEVATION"
             />
             <TipBox
               value={story.estimatedTime}
-              logo={<BsFillStopwatchFill className="text-[30px]" />}
+              logo={<BsFillStopwatchFill className="text-[60px]" />}
               topic="TIME"
             />
             <TipBox
               value={story.difficultyStatus}
-              logo={<GiJumpAcross className="text-[40px]" />}
+              logo={<FaPersonRunning className="text-[65px]" />}
               topic="DIFFICULTY"
             />
           </div>
@@ -232,7 +226,7 @@ const TravelStory = () => {
         </div>
 
         {/* AUTHOR */}
-        <div className="bg-red-400 py-3 px-4 mt-16 shadow-md w-[600px] mx-auto rounded-lg flex">
+        <div className=" py-3 px-4 mt-16 shadow-md w-[600px] mx-auto rounded-lg flex">
           <img
             className="w-16 h-16 rounded-full object-cover"
             src={`http://localhost:5000/images/${story?.userId?.profilePic}`}
@@ -245,11 +239,11 @@ const TravelStory = () => {
             </p>
             <p className="text-sm text-gray-500">{story?.userId?.email}</p>
 
-            <p className="mt-2 text-sm">
-              {story?.userId?.aboutMe?.split(".").slice(0, 3).join(".") + "."}
+            <p className="mt-2 text-[15px]">
+              {story?.userId?.aboutMe?.split(".").slice(0, 2).join(".") + "."}
             </p>
 
-            <div className="flex gap-4 mt-4">
+            <div className="flex gap-4 mt-7">
               <FaLinkedinIn />
               <FaX />
               <FaYoutube />
@@ -266,24 +260,40 @@ const TravelStory = () => {
           </div>
 
           {/* comment display */}
-          <div className="bg-white shadow rounded-lg mt-6 ">
-            {reviews?.map((review) => (
-              <div className="w-full flex items-start">
-                <img
-                  src={`http://localhost:5000/images/${review?.userId?.profilePic}`}
-                  alt=""
-                  className="w-10 h-10 rounded-full object-cover object-top"
-                />
+          <div className="scrollbar-hide bg-white mt-6  h-60 overflow-y-auto p-7">
+            {reviews?.length === 0 ? (
+              <p className="text-center text-gray-400 mt-10 text-sm">
+                Be the first one to add a comment ✨
+              </p>
+            ) : (
+              reviews?.map((review) => (
+                <div className="w-full flex items-start p-2  mb-3">
+                  <img
+                    src={`http://localhost:5000/images/${review?.userId?.profilePic}`}
+                    alt=""
+                    className="w-11 h-11 rounded-full object-cover object-top mr-5"
+                  />
 
-                <div>
-                  <p>
-                    {review?.userId?.firstName} {review?.userId?.lastName}
-                  </p>
-                  <p>{review?.createdAt}</p>
-                  <p>{review?.content}</p>
+                  <div className="bg-slate-100/60 w-[calc(100%-100px)] py-2 px-4">
+                    <p className="font-semibold text-[17px]">
+                      {review?.userId?.firstName}
+                    </p>
+                    <div className="flex items-center gap-0.5 mb-2">
+                      {[...Array(review?.rating || 0)].map((_, i) => (
+                        <FaStar key={i} className="text-black text-[9px]" />
+                      ))}
+                    </div>
+                    <p className="mb-2 font-extralight text-[12px]">
+                      <span>
+                        {moment(review?.createdAt).format("YYYY-MM-DD")} at{" "}
+                      </span>
+                      <span>{moment(review?.createdAt).format("hh:mm A")}</span>
+                    </p>
+                    <p>{review?.content}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
 
           {/* comment form section */}
@@ -371,11 +381,11 @@ export default TravelStory;
 // TIP BOX
 const TipBox = ({ topic, value, logo }) => {
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-4  my-5">
       {logo}
       <div>
-        <p className="text-xs text-gray-500">{topic}</p>
-        <p className="font-semibold text-lg">{value}</p>
+        <p className="text-[17px] text-gray-500">{topic}</p>
+        <p className="font-bold text-[25px]">{value}</p>
       </div>
     </div>
   );

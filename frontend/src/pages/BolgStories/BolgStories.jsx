@@ -56,10 +56,14 @@ const BlogListPage = () => {
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
             >
-              <option value="">All Categories</option>
-              <option value="Design">Design</option>
-              <option value="Urbanism">Urbanism</option>
-              <option value="Sustainability">Sustainability</option>
+              <option value="">Select Category</option>
+              <option value="Beach">Beach</option>
+              <option value="City">City</option>
+              <option value="Forest">Forest</option>
+              <option value="Desert">Desert</option>
+              <option value="Lake">Lake</option>
+              <option value="Landmark">Landmark</option>
+              <option value="Mountain">Mountain</option>
             </select>
 
             {/* Custom Arrow */}
@@ -78,7 +82,7 @@ const BlogListPage = () => {
             return <StoryCard key={story._id} story={story} />;
           })
         ) : (
-          <p className="col-span-full text-gray-500 text-center">
+          <p className="col-span-full text-gray-500 text-center text-[17px] font-semiblack">
             No blogs found.
           </p>
         )}
