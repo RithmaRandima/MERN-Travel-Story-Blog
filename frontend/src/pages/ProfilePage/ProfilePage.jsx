@@ -24,7 +24,6 @@ const ProfilePage = () => {
     "Mountain",
   ];
 
-  // 🔥 Filtering logic
   const filteredStories = selectedCategory
     ? allStoriesByUser?.filter((story) => story.category === selectedCategory)
     : allStoriesByUser;
@@ -34,98 +33,94 @@ const ProfilePage = () => {
   }, []);
 
   return (
-    <div className="relative w-full min-h-screen bg-gradient-to-b from-[#47E0FF]/20 via-[#7BE8FF]/30 to-[#7BE8FF]/30">
+    <div className="w-full min-h-screen bg-gradient-to-b from-[#47E0FF]/20 via-[#7BE8FF]/30 to-[#7BE8FF]/30">
       <Navbar />
 
-      {/* user Profile Details */}
-      <div className="w-full relative ">
-        <div className="bg-green200 pt-40 h-screen">
-          <h1 className="font-extrabold capitalize text-[90px]">
-            {user?.firstName} {user?.lastName}
-          </h1>
-          <p className="font-setralight text-[30px] ml-1.5 -mt-5 text-slate-400">
-            {user?.email}
-          </p>
-          <p className="w-[45%] mt-10 tracking-[1px] capitalize leading-[30px] ml-5">
-            {user?.aboutMe}
-          </p>
+      {/* ================= PROFILE HEADER ================= */}
+      <div className="relative w-full pt-28 sm:pt-36 md:pt-40 px-4 sm:px-8">
+        <div className="flex flex-col-reverse lg:flex-row lg:items-start lg:justify-between gap-10">
+          {/* LEFT TEXT */}
+          <div className="w-full lg:w-2/3">
+            <h1 className="font-extrabold capitalize text-3xl sm:text-5xl md:text-7xl lg:text-[90px] leading-tight">
+              {user?.firstName} {user?.lastName}
+            </h1>
 
-          <Link
-            to="/fullProfile"
-            className="flex items-center gap-2 font-bold text-[17px] text-sky-500 ml-5 mt-5"
-          >
-            More about me <FaArrowRight className="mt-1.5" />
-          </Link>
-        </div>
+            <p className="font-light text-lg sm:text-xl md:text-2xl lg:text-[30px] text-slate-400 mt-2">
+              {user?.email}
+            </p>
 
-        {/* profile pic */}
-        <div className="absolute right-10 top-25 w-75 h-75 rounded-full shadow-[1px_3px_4px_rgba(0,0,0,0.5)]">
-          <img
-            src={`http://localhost:5000/images/${user?.profilePic}`}
-            alt="Profile"
-            className="w-full h-full rounded-full object-cover object-top"
-          />
-        </div>
+            <p className="w-full lg:w-[80%] mt-6 sm:mt-8 tracking-wide leading-7 sm:leading-8 text-sm sm:text-base capitalize">
+              {user?.aboutMe}
+            </p>
 
-        {/* cover pic */}
-        <div className="absolute right-70 top-90 w-60 h-60 rounded-full shadow-[1px_3px_4px_rgba(0,0,0,0.5)]">
-          <img
-            src={`http://localhost:5000/images/${user?.coverPic}`}
-            alt="Cover"
-            className="w-full h-full rounded-full object-cover object-top"
-          />
+            <Link
+              to="/fullProfile"
+              className="flex items-center gap-2 font-bold text-sky-500 mt-5"
+            >
+              More about me <FaArrowRight />
+            </Link>
+          </div>
+
+          {/* RIGHT IMAGES */}
+          <div className="relative w-full lg:w-1/3 flex justify-center lg:justify-end">
+            {/* Profile Pic */}
+            <div className="w-40 h-40 sm:w-52 sm:h-52 md:w-64 md:h-64 lg:w-75 lg:h-75 rounded-full shadow-lg">
+              <img
+                src={`http://localhost:5000/images/${user?.profilePic}`}
+                className="w-full h-full rounded-full object-cover"
+                alt=""
+              />
+            </div>
+
+            {/* Cover Pic (hidden on small screens) */}
+            <div className="hidden md:block absolute right-60 bottom-[-150px] w-32 h-32 lg:w-50 lg:h-50 rounded-full shadow-lg">
+              <img
+                src={`http://localhost:5000/images/${user?.coverPic}`}
+                className="w-full h-full rounded-full object-cover"
+                alt=""
+              />
+            </div>
+          </div>
         </div>
 
         {/* Add Blog Button */}
         <button
           onClick={() => setShowAddBlog(true)}
-          className="absolute bg-white text-black py-3 px-6 rounded-full right-10 bottom-10 flex items-center gap-2 font-bold text-[17px] hover:-translate-y-0.5 hover:shadow-[2px_2px_1px_rgba(0,0,0,.4)] transition shadow-[1px_1px_4px_rgba(0,0,0,.2)]"
+          className="fixed bottom-6 right-4 sm:bottom-10 sm:right-10 bg-white text-black py-2 sm:py-3 px-4 sm:px-6 rounded-full font-bold shadow-md hover:-translate-y-1 z-10 transition"
         >
           Add New Story
         </button>
       </div>
 
+      {/* ================= STORIES ================= */}
       {/* Stories Section */}
-      <div className="w-full min-h-screen pb-20">
-        <div className="text-center pt-6 pb-16">
-          <h1 className="text-5xl font-extrabold mb-4">See My Stories</h1>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+      <div className="w-full pb-20">
+        <div className="text-center pt-6 pb-10 sm:pb-16 px-4">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold mb-3">
+            See My Stories
+          </h1>
+          <p className="text-gray-600 max-w-2xl mx-auto text-sm sm:text-base">
             Discover stories, insights, and inspiration from our community.
           </p>
         </div>
 
-        <div className="flex w-[90%] mx-auto gap-8">
-          {/* LEFT - Stories */}
-          <div className="scrollbar-hide w-2/3 h-[100vh] overflow-y-auto py-5 px-3">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {filteredStories?.map((story) => (
-                <ProfileStoryCard key={story.id} story={story} />
-              ))}
-            </div>
-
-            {/* Empty state */}
-            {filteredStories?.length === 0 && (
-              <p className="text-gray-500 text-center mt-5">
-                No stories found for this category.
-              </p>
-            )}
-          </div>
-
-          {/* RIGHT - Sidebar */}
-          <div className="w-1/3">
-            <div className="sticky top-24">
+        {/* MAIN LAYOUT */}
+        {/* MAIN LAYOUT */}
+        <div className="w-[92%] mx-auto flex flex-col lg:flex-row gap-8">
+          {/* ================= SIDEBAR (MOBILE TOP, DESKTOP RIGHT) ================= */}
+          <div className="w-full lg:w-1/3 order-1 lg:order-2">
+            <div className="lg:sticky lg:top-24 space-y-6">
               {/* Categories */}
-              <div className="bg-white shadow-md p-6 mb-6">
+              <div className="bg-white shadow-md p-4 sm:p-6 rounded-xl">
                 <h2 className="font-semibold text-lg mb-3">Categories</h2>
 
                 <div className="flex flex-wrap gap-2">
-                  {/* All */}
                   <button
                     onClick={() => setSelectedCategory("")}
-                    className={`px-5 py-1 rounded-full border transition ${
+                    className={`px-4 py-1 rounded-full border ${
                       selectedCategory === ""
                         ? "bg-sky-400 text-white"
-                        : "bg-gray-100 hover:bg-blue-100"
+                        : "bg-gray-100"
                     }`}
                   >
                     All
@@ -135,10 +130,10 @@ const ProfilePage = () => {
                     <button
                       key={cat}
                       onClick={() => setSelectedCategory(cat)}
-                      className={`px-3 py-1 rounded-full border transition ${
+                      className={`px-3 py-1 rounded-full border ${
                         selectedCategory === cat
                           ? "bg-blue-500 text-white"
-                          : "bg-gray-100 hover:bg-blue-100"
+                          : "bg-gray-100"
                       }`}
                     >
                       {cat}
@@ -148,38 +143,50 @@ const ProfilePage = () => {
               </div>
 
               {/* Recent Posts */}
-              {allStoriesByUser > 0 && (
-                <div className="bg-white rounded-2xl shadow-md py-4 px-3">
+              {allStoriesByUser?.length > 0 && (
+                <div className="bg-white rounded-2xl shadow-md p-4">
                   <h2 className="font-semibold text-lg mb-3">Recent Posts</h2>
 
                   {allStoriesByUser?.slice(0, 3).map((story) => (
-                    <div
-                      key={story.id}
-                      className="w-full h-[100px] flex gap-3 border-b border-slate-300 py-3"
-                    >
+                    <div key={story.id} className="flex gap-3 border-b py-3">
                       <img
                         src={`http://localhost:5000/images/${story?.mainImage}`}
-                        className="h-full w-[90px] object-cover cursor-pointer"
+                        className="h-16 w-20 object-cover"
                         alt=""
                       />
 
-                      <div className="w-[240px] h-full px-2">
-                        <p className="font-bold hover:text-sky-400">
+                      <div className="flex-1">
+                        <p className="font-bold text-sm hover:text-sky-400">
                           {story?.title}
                         </p>
 
-                        <p className="text-[14px] text-slate-500 mt-[12px] flex items-center justify-between">
-                          <span className="font-semibold">
-                            {moment(story?.visitedDate).format("MMMM D, YYYY")}
+                        <p className="text-xs text-slate-500 mt-2 flex justify-between">
+                          <span>
+                            {moment(story?.visitedDate).format("MMM D, YYYY")}
                           </span>
-                          <span className="font-extralight">
-                            {moment(story?.createdAt).fromNow()}
-                          </span>
+                          <span>{moment(story?.createdAt).fromNow()}</span>
                         </p>
                       </div>
                     </div>
                   ))}
                 </div>
+              )}
+            </div>
+          </div>
+
+          {/* ================= STORIES (MOBILE BELOW, DESKTOP LEFT) ================= */}
+          <div className="w-full lg:w-2/3 order-2 lg:order-1">
+            <div className="h-[70vh] overflow-y-auto pr-2 scrollbar-hide">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {filteredStories?.map((story) => (
+                  <ProfileStoryCard key={story.id} story={story} />
+                ))}
+              </div>
+
+              {filteredStories?.length === 0 && (
+                <p className="text-gray-500 text-center mt-5">
+                  No stories found for this category.
+                </p>
               )}
             </div>
           </div>

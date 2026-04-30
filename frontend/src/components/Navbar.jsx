@@ -42,7 +42,7 @@ const Navbar = () => {
             key={i}
             to={path}
             onClick={() => setMenuOpen(false)}
-            className="text-lg font-bold text-gray-800"
+            className="text-lg font-bold text-gray-800 text-[15px]"
           >
             <p className="capitalize">{name}</p>
             {location.pathname === path && (
@@ -61,7 +61,7 @@ const Navbar = () => {
       }`}
     >
       {/* Top Bar */}
-      <div className="flex justify-between items-center bg-white px-8 md:px-10 h-16">
+      <div className="flex justify-between items-center bg-white px-3 md:px-8  h-16">
         {/* Left: Desktop Links */}
         <div className="hidden md:flex items-center gap-6">{navLinks}</div>
 
@@ -90,7 +90,7 @@ const Navbar = () => {
             <FaSearch className="text-[20px]" />
             <Link
               to="/login"
-              className="bg-sky-400 text-white px-3 py-1 rounded-full font-bold hover:bg-sky-500 transition"
+              className="bg-sky-400 text-white rounded-full font-bold hover:bg-sky-500 transition text-[14px] px-4 py-1 "
             >
               Login
             </Link>
