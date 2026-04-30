@@ -2,7 +2,7 @@ import React from "react";
 
 const Testimonials = () => {
   return (
-    <div className="my-30">
+    <div className="my-30 hidden md:block">
       <div className="max-w-6xl mx-auto px-4 mt-16">
         <h2 className="text-2xl font-semibold mb-8 text-center">
           What Travelers Say

@@ -20,46 +20,27 @@ const Features = () => {
   };
 
   return (
-    <div className="min-h-screen w-full">
-      <h1 className="section-heading text-center text-[60px] py-6 font-semibold">
+    <div className="w-full mt-10 py-6 sm:py-10">
+      {/* Heading */}
+      <h1 className="text-center section-heading text-4xl md:text-5xl lg:text-6xl font-semibold mb-6">
         Meet Best Travelers
       </h1>
 
-      <div className="relative w-[90%] mx-auto">
-        {/* LEFT BUTTON */}
-        <button
-          onClick={() => scroll("left")}
-          className="absolute right-20 top-15 -translate-y-1/2 z-20
-          h-12 w-12 rounded-full flex items-center justify-center
-          bg-white shadow-md text-black hover:scale-105 transition"
-        >
-          <MdKeyboardArrowLeft size={30} />
-        </button>
-
+      <div className="relative w-[95%] mx-auto">
         {/* SLIDER */}
         <div
           ref={sliderRef}
-          className="flex gap-6 overflow-x-auto scroll-smooth scrollbar-hide p-5 px-10"
+          className="flex gap-4 sm:gap-6 overflow-x-auto scroll-smooth scrollbar-hide px-4 sm:px-8 py-4"
         >
           {allStories?.slice(0, 8).map((story) => (
             <div
               key={story._id}
-              className="min-w-[300px] flex-shrink-0 transition-transform duration-300 hover:scale-105"
+              className="min-w-[220px] sm:min-w-[260px] md:min-w-[300px] flex-shrink-0 transition-transform duration-300 hover:scale-105"
             >
               <FeatureBox story={story} />
             </div>
           ))}
         </div>
-
-        {/* RIGHT BUTTON */}
-        <button
-          onClick={() => scroll("right")}
-          className="absolute right-5 top-15 -translate-y-1/2 z-20
-          h-12 w-12 rounded-full flex items-center justify-center
-          bg-white shadow-md text-black hover:scale-105 transition"
-        >
-          <MdKeyboardArrowRight size={30} />
-        </button>
       </div>
     </div>
   );

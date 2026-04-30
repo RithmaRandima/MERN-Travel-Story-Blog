@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import beach from "../assets/beach-bg.jpg";
 import city from "../assets/cities-bg.jpg";
 import forest from "../assets/forest-bg.jpg";
@@ -20,7 +20,22 @@ const categoryData = [
 
 const Categories = () => {
   const [scrollIndex, setScrollIndex] = useState(0);
-  const itemsPerPage = 4;
+  const [itemsPerPage, setItemsPerPage] = useState(4);
+
+  // 👇 Detect screen size
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 640) {
+        setItemsPerPage(2); // mobile
+      } else {
+        setItemsPerPage(4); // desktop
+      }
+    };
+
+    handleResize(); // run once
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const next = () => {
     setScrollIndex((prev) =>
@@ -42,37 +57,40 @@ const Categories = () => {
   );
 
   return (
-    <div className="max-w-6xl mx-auto relative">
-      {/* Carousel */}
-      <div className="flex items-center gap-2 ">
+    <div className="max-w-6xl mx-auto px-2 sm:px-4 relative">
+      <div className="flex items-center gap-2">
+        {/* Left Button */}
         <button
           onClick={prev}
-          className=" text-black px-1 py-1 rounded-full hover:bg-sky-400/20 text-[30px]"
+          className="text-black p-1 rounded-full hover:bg-sky-400/20 text-2xl sm:text-3xl"
         >
           <MdKeyboardArrowLeft />
         </button>
 
-        <div className="flex overflow-hidden w-full gap-4">
+        {/* Cards */}
+        <div className="flex overflow-hidden w-full gap-3 sm:gap-4">
           {visibleItems.map((item, i) => (
             <div
               key={i}
-              className="relative flex-1 min-w-[0] h-60 rounded-[0px] overflow-hidden shadow-[1px_1px_1px_rgba(0,0,0,1)]"
+              className="relative flex-1 h-35 sm:h-52 md:h-60 overflow-hidden shadow-md"
             >
               <img
                 src={item.image}
                 alt={item.name}
                 className="w-full h-full object-cover"
               />
-              <h1 className="flex items-end justify-center pb-4 font-bold tracking-[5px] text-[19px] absolute bottom-0 w-full h-full bg-gradient-to-t from-black/90 via-black/10 to-transparent text-white text-center py-1">
+
+              <h1 className="flex items-end justify-center pb-2 sm:pb-4 font-bold tracking-widest text-xs sm:text-sm md:text-lg absolute bottom-0 w-full h-full bg-gradient-to-t from-black/90 via-black/10 to-transparent text-white text-center">
                 {item.name}
               </h1>
             </div>
           ))}
         </div>
 
+        {/* Right Button */}
         <button
           onClick={next}
-          className=" text-black px-1 py-1 rounded-full hover:bg-sky-400/20 text-[30px]"
+          className="text-black p-1 rounded-full hover:bg-sky-400/20 text-2xl sm:text-3xl"
         >
           <MdKeyboardArrowRight />
         </button>

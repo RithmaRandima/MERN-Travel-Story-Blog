@@ -1,79 +1,96 @@
 import React, { useState, useEffect } from "react";
 import ProfileInfo from "./ProfileInfo";
 import { Link, useLocation } from "react-router-dom";
-import { FaFacebook, FaInstagram, FaSearch, FaTwitter } from "react-icons/fa"; // social icons
+import { FaSearch, FaBars, FaTimes } from "react-icons/fa";
 import { useBlog } from "../context/Blog-Context";
 
 const Navbar = () => {
   const [show, setShow] = useState(true);
   const [lastScroll, setLastScroll] = useState(0);
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const { navigate, user, token } = useBlog();
+  const location = useLocation();
 
   const onLogout = () => {
     localStorage.clear();
     navigate("/login");
   };
 
-  // Hide navbar on scroll down, show on scroll up
+  // Hide navbar on scroll
   useEffect(() => {
     const handleScroll = () => {
       const currentScroll = window.scrollY;
       if (currentScroll > lastScroll && currentScroll > 40) {
-        setShow(false); // scroll down
+        setShow(false);
       } else {
-        setShow(true); // scroll up
+        setShow(true);
       }
       setLastScroll(currentScroll);
     };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScroll]);
 
-  const location = useLocation();
+  const navLinks = (
+    <>
+      {["/home", "/stories", "/authors"].map((path, i) => {
+        const name = path.replace("/", "");
+        return (
+          <Link
+            key={i}
+            to={path}
+            onClick={() => setMenuOpen(false)}
+            className="text-lg font-bold text-gray-800"
+          >
+            <p className="capitalize">{name}</p>
+            {location.pathname === path && (
+              <hr className="h-1 w-full rounded-full bg-sky-400 border-0" />
+            )}
+          </Link>
+        );
+      })}
+    </>
+  );
+
   return (
     <div
-      className={`fixed w-full top-0 z-50  h-30 transition-transform duration-300 ${
+      className={`fixed w-full top-0 z-50 transition-transform duration-300 ${
         show ? "translate-y-0" : "-translate-y-full"
       }`}
     >
-      {/* Top part: Social icons left */}
-      <div className="flex bg-white pl-15 pr-5 justify-between items-center h-16 py-2 ">
-        <div className="flex  items-center">
-          <Link
-            to="/home"
-            className=" font-extrabold text-lg  text-gray-800 mr-6"
-          >
-            <p>Home</p>
-            {location.pathname === "/home" && (
-              <hr className="h-1 w-full rounded-full bg-sky-400 border-0" />
-            )}
-          </Link>
+      {/* Top Bar */}
+      <div className="flex justify-between items-center bg-white px-8 md:px-10 h-16">
+        {/* Left: Desktop Links */}
+        <div className="hidden md:flex items-center gap-6">{navLinks}</div>
 
-          <Link to="/stories" className=" text-lg font-extrabold text-gray-800">
-            <p>Stories</p>
-            {location.pathname === "/stories" && (
-              <hr className="h-1 w-full rounded-full bg-sky-400 border-0" />
-            )}
-          </Link>
-
-          <Link
-            to="/authors"
-            className="ml-5 text-lg font-extrabold text-gray-800"
-          >
-            <p>Authors</p>
-            {location.pathname === "/authors" && (
-              <hr className="h-1 w-full rounded-full bg-sky-400 border-0" />
-            )}
-          </Link>
+        {/* Mobile Hamburger */}
+        <div className="md:hidden">
+          {menuOpen ? (
+            <FaTimes
+              size={22}
+              onClick={() => setMenuOpen(false)}
+              className="cursor-pointer"
+            />
+          ) : (
+            <FaBars
+              size={22}
+              onClick={() => setMenuOpen(true)}
+              className="cursor-pointer"
+            />
+          )}
         </div>
+
+        {/* Right Side */}
         {token ? (
           <ProfileInfo userInfo={user} onLogout={onLogout} />
         ) : (
-          <div className="flex items-center gap-5">
-            <FaSearch className="font-bold text-[22px]" />
+          <div className="flex items-center gap-4">
+            <FaSearch className="text-[20px]" />
             <Link
               to="/login"
-              className="bg-sky-400  text-white px-4 py-1 rounded-full font-bold  hover:bg-sky-500 transition hover:scale-110"
+              className="bg-sky-400 text-white px-3 py-1 rounded-full font-bold hover:bg-sky-500 transition"
             >
               Login
             </Link>
@@ -81,10 +98,19 @@ const Navbar = () => {
         )}
       </div>
 
-      {/* Bottom part: Profile/Login right */}
-      <div className="flex justify-center w-fit mx-auto  items-center px-6 ">
+      {/* Mobile Menu */}
+      {menuOpen && (
+        <div className="md:hidden bg-white flex flex-col items-center gap-4 py-4 shadow-md">
+          {navLinks}
+        </div>
+      )}
+
+      {/* Logo */}
+      <div className="flex justify-center py-2">
         <h1
-          className={`logo ${location.pathname === "/home" ? "text-white" : "text-black"} text-center text-[45px] font-exrtralight tracking-[4px]`}
+          className={`logo ${
+            location.pathname === "/home" ? "text-white" : "text-black"
+          } text-2xl md:text-4xl tracking-widest font-light`}
         >
           WanderInk
         </h1>

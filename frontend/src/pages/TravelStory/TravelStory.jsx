@@ -133,7 +133,7 @@ const TravelStory = () => {
       {/* ✅ MAIN CONTENT */}
       <div className="bg-white relative z-10 pt-10 shadow-lg">
         {/* Gradient overlay */}
-        <div className="absolute z-20 inset-0 bg-gradient-to-t from-white via-white/50 to-transparent h-[43vh] z-50 -top-68">
+        <div className="absolute z-20 inset-0 bg-gradient-to-t from-white via-white/50 to-transparent h-[43vh] z-50 -top-64">
           {/* TITLE */}
           <div className="text-center absolute left-[50%] w-[100%] top-40 -translate-x-[50%]">
             <div className="flex justify-center items-center gap-2">

@@ -36,7 +36,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <div className="relative h-[90vh] overflow-hidden">
+    <div className="relative h-[55vh] md:h-[90vh] overflow-hidden">
       {slides.map((slide, index) => {
         const active = index === current;
         return (
@@ -61,28 +61,30 @@ const Hero = () => {
             </div>
 
             {/* Text */}
-            <div className="absolute inset-0 flex flex-col pt-60 items-center justify-center text-center px-4">
-              <h1 className="hero-title text-4xl py-4 md:text-[80px] px-30  font-extrabold text-white flex flex-wrap justify-center overflow-hidden">
+            <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 sm:px-6 md:px-10 mt-[190px] md:mt-[270px]">
+              {/* Title */}
+              <h1 className="hero-title text-[40px] lg:text-7xl font-extrabold text-white flex flex-wrap justify-center overflow-hidden leading-tight pr-4">
                 {slide.title.split("").map((char, i) => (
                   <span
                     key={i}
                     className={`inline-block transform transition-all duration-500 ${
                       active
                         ? "opacity-100 translate-x-0"
-                        : "opacity-0 translate-x-8"
+                        : "opacity-0 translate-x-6 sm:translate-x-8"
                     }`}
-                    style={{ transitionDelay: `${i * 50}ms` }} // stagger letters
+                    style={{ transitionDelay: `${i * 40}ms` }}
                   >
                     {char === " " ? "\u00A0" : char}
                   </span>
                 ))}
               </h1>
 
+              {/* Description */}
               <p
-                className={`-mt-2 text-[25px] w-[450px] text-black font-bold transition-all duration-700 ${
+                className={`mt-1 text-base sm:text-base md:text-lg lg:text-xl max-w-xs sm:max-w-md md:max-w-xl text-black font-semibold transition-all duration-700 ${
                   active
                     ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-10"
+                    : "opacity-0 translate-y-8"
                 }`}
                 style={{ transitionDelay: "400ms" }}
               >
