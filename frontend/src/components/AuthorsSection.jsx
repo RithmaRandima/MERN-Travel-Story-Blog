@@ -12,21 +12,21 @@ const AuthorsSection = () => {
   const { allAuthors } = useBlog();
 
   return (
-    <div className="h-fit my-20 md:min-h-screen w-full">
+    <div className="h-fit my-20  md:min-h-screen w-full">
       {/* Heading */}
       <h1 className="section-heading  text-center text-4xl md:text-5xl lg:text-6xl font-semibold mb-6  lg:text-[60px] py-6">
         Meet Best Travelers
       </h1>
 
       {/* Slider Container */}
-      <div className="w-[75%] sm:w-[85%] mx-auto">
+      <div className="w-[98%] sm:w-[85%] mx-auto p-1 py-3">
         <Swiper
           modules={[Navigation, Autoplay]}
           autoplay={{ delay: 5000 }}
           spaceBetween={20}
           breakpoints={{
             0: {
-              slidesPerView: 1,
+              slidesPerView: 2,
               spaceBetween: 15,
             },
             640: {

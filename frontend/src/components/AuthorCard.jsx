@@ -13,9 +13,9 @@ const AuthorCard = ({ author }) => {
   console.log(author._id);
   return (
     <Link to={`/authors/${author._id}`}>
-      <div className="relative bg-white shadow-[1px_1px_2px_rgba(0,0,0,0.2)]  w-full h-[450px] overflow-hidden rounded-[14px]">
+      <div className="relative bg-white shadow-[1px_1px_2px_rgba(0,0,0,0.2)]  w-full h-[370px] md:h-[440px] overflow-hidden rounded-[14px]">
         {/* cover image */}
-        <div className="relative h-[70%] w-full ">
+        <div className="relative h-[65%] md:h-[70%] w-full ">
           <img
             src={`http://localhost:5000/images/${author.coverPic}`}
             className="w-full h-full object-cover object-top"
@@ -26,7 +26,7 @@ const AuthorCard = ({ author }) => {
         </div>
         {/* <div className="absolute inset-0 bg-gradient-to-t from-white/30 via-black/20 to-black"></div> */}
         {/* profile image */}
-        <div className="absolute w-32 h-32 border-5 border-white left-[50%] top-[60%] -translate-y-[50%] -translate-x-[50%] rounded-full">
+        <div className="absolute w-23 h-23 md:w-32 md:h-32 border-5 border-white left-[50%] top-[60%] -translate-y-[50%] -translate-x-[50%] rounded-full">
           <img
             src={`http://localhost:5000/images/${author.profilePic}`}
             className="w-full h-full object-cover object-top rounded-full"
