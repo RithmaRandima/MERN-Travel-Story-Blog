@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import { useBlog } from "../../context/Blog-Context";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
 import SubscribeNowSection from "../../components/SubscribeNowSection";
 import {
@@ -14,11 +14,22 @@ import {
 import Footer from "../../components/Footer";
 
 const FullDetailProfile = () => {
+  const { user, profile } = useBlog();
+
+  const [currentUser, setCurrentUser] = useState(null);
+  const id = useParams();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const { user } = useBlog();
+  useEffect(() => {
+    if (id) {
+      setCurrentUser(profile);
+    } else {
+      setCurrentUser(user);
+    }
+  }, [id]);
 
   return (
     <div className="w-full min-h-screen bg-gradient-to-b from-[#47E0FF]/20 via-[#7BE8FF]/30 to-[#7BE8FF]/30">
@@ -34,17 +45,17 @@ const FullDetailProfile = () => {
           {/* 👇 paste your existing block untouched */}
           <div className="text-center pt-35 h-fit mb-20">
             <h1 className="font-bold capitalize text-[40px] w-[70%] mx-auto leading-[70px]">
-              {user?.aboutMe?.split(",")[2]?.split(".")[0]}.
+              {currentUser?.aboutMe?.split(",")[2]?.split(".")[0]}.
             </h1>
 
             <p className="font-setralight text-[30px] text-slate-400">
-              {user?.email}
+              {currentUser?.email}
             </p>
 
             {/* image 01 */}
             <div className="w-90 h-90 rounded-full mx-auto mt-10 shadow-[1px_3px_4px_rgba(0,0,0,0.5)]">
               <img
-                src={`http://localhost:5000/images/${user?.userImages?.[0]}`}
+                src={`http://localhost:5000/images/${currentUser?.userImages?.[0]}`}
                 className="w-full h-full rounded-full object-cover object-top"
                 alt=""
               />
@@ -53,7 +64,7 @@ const FullDetailProfile = () => {
             {/* image 02 */}
             <div className="w-150 h-150 rounded-full mx-auto mt-10 shadow-[1px_3px_4px_rgba(0,0,0,0.5)]">
               <img
-                src={`http://localhost:5000/images/${user?.profilePic}`}
+                src={`http://localhost:5000/images/${currentUser?.profilePic}`}
                 className="w-full h-full rounded-full object-cover object-top"
                 alt=""
               />
@@ -62,7 +73,9 @@ const FullDetailProfile = () => {
             {/* story */}
             <div className="text-left w-[850px] ml-10">
               <h1 className="font-extrabold text-[50px] mb-4">My Story</h1>
-              <p className="text-[28px] font-extralight">{user?.myStory}</p>
+              <p className="text-[28px] font-extralight">
+                {currentUser?.myStory}
+              </p>
 
               <div className="text-[30px] flex gap-10 mt-8">
                 <FaLinkedinIn />
@@ -76,7 +89,7 @@ const FullDetailProfile = () => {
             {/* image 03 */}
             <div className="w-75 h-75 rounded-full mx-auto float-right -mt-35 shadow-[1px_3px_4px_rgba(0,0,0,0.5)]">
               <img
-                src={`http://localhost:5000/images/${user?.userImages?.[1]}`}
+                src={`http://localhost:5000/images/${currentUser?.userImages?.[1]}`}
                 className="w-full h-full rounded-full object-cover object-top"
                 alt=""
               />
@@ -85,7 +98,7 @@ const FullDetailProfile = () => {
             {/* image 04 */}
             <div className="w-160 h-160 rounded-full ml-10 mt-30 shadow-[1px_3px_4px_rgba(0,0,0,0.5)]">
               <img
-                src={`http://localhost:5000/images/${user?.coverPic}`}
+                src={`http://localhost:5000/images/${currentUser?.coverPic}`}
                 className="w-full h-full rounded-full object-cover object-top"
                 alt=""
               />
@@ -114,10 +127,10 @@ const FullDetailProfile = () => {
             {/* about right */}
             <div className="absolute right-4 md:-right-5 top-90 md:top-70 w-[390px]">
               <h1 className="font-bold text-[50px] mb-10 leading-[50px]">
-                I'm {user?.firstName} <br /> {user?.lastName}
+                I'm {currentUser?.firstName} <br /> {currentUser?.lastName}
               </h1>
 
-              <p className="text-[20px]">{user?.aboutMe}</p>
+              <p className="text-[20px]">{currentUser?.aboutMe}</p>
 
               <Link className="flex items-center gap-2 font-bold text-sky-500 mt-5">
                 Read my stories <FaArrowRight />
@@ -130,7 +143,7 @@ const FullDetailProfile = () => {
                 My Perspective
               </h1>
               <p className="text-[24px] font-extralight">
-                {user?.myPerspective}
+                {currentUser?.myPerspective}
               </p>
             </div>
           </div>
@@ -143,15 +156,15 @@ const FullDetailProfile = () => {
           {/* HEADER */}
           <div className="text-center mb-10">
             <h1 className="text-2xl font-bold">
-              {user?.firstName} {user?.lastName}
+              {currentUser?.firstName} {currentUser?.lastName}
             </h1>
-            <p className="text-slate-500">{user?.email}</p>
+            <p className="text-slate-500">{currentUser?.email}</p>
           </div>
 
           {/* MAIN IMAGE */}
           <div className="flex justify-center mb-8">
             <img
-              src={`http://localhost:5000/images/${user?.profilePic}`}
+              src={`http://localhost:5000/images/${currentUser?.profilePic}`}
               className="w-52 h-52 rounded-full object-cover shadow-md"
               alt=""
             />
@@ -160,7 +173,9 @@ const FullDetailProfile = () => {
           {/* ABOUT */}
           <div className="text-center mb-10">
             <h2 className="text-xl font-bold mb-3">About Me</h2>
-            <p className="text-sm text-slate-700 leading-6">{user?.aboutMe}</p>
+            <p className="text-sm text-slate-700 leading-6">
+              {currentUser?.aboutMe}
+            </p>
 
             <Link className="flex justify-center items-center gap-2 mt-4 text-sky-500 font-bold">
               Read my stories <FaArrowRight />
@@ -190,7 +205,7 @@ const FullDetailProfile = () => {
           {/* STORY */}
           <div className="mb-10">
             <h1 className="text-xl font-bold mb-3">My Story</h1>
-            <p className="text-sm leading-6">{user?.myStory}</p>
+            <p className="text-sm leading-6">{currentUser?.myStory}</p>
           </div>
 
           {/* SOCIAL */}
@@ -205,17 +220,17 @@ const FullDetailProfile = () => {
           {/* PERSPECTIVE */}
           <div className="text-center mb-10">
             <h1 className="text-xl font-bold mb-3">My Perspective</h1>
-            <p className="text-sm">{user?.myPerspective}</p>
+            <p className="text-sm">{currentUser?.myPerspective}</p>
           </div>
 
           {/* EXTRA IMAGES (mobile simplified) */}
           <div className="flex justify-center gap-4">
             <img
-              src={`http://localhost:5000/images/${user?.userImages?.[0]}`}
+              src={`http://localhost:5000/images/${currentUser?.userImages?.[0]}`}
               className="w-24 h-24 rounded-full object-cover"
             />
             <img
-              src={`http://localhost:5000/images/${user?.userImages?.[1]}`}
+              src={`http://localhost:5000/images/${currentUser?.userImages?.[1]}`}
               className="w-24 h-24 rounded-full object-cover"
             />
           </div>
@@ -223,7 +238,7 @@ const FullDetailProfile = () => {
           {/* COVER */}
           <div className="flex justify-center mt-8">
             <img
-              src={`http://localhost:5000/images/${user?.coverPic}`}
+              src={`http://localhost:5000/images/${currentUser?.coverPic}`}
               className="w-64 h-64 rounded-full object-cover"
             />
           </div>

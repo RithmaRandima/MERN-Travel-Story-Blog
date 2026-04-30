@@ -13,6 +13,9 @@ export const BlogProvider = ({ children }) => {
   const [allAuthors, setAllAuthors] = useState([]);
   const [allStories, setAllStories] = useState([]);
   const [allStoriesByUser, setAllStoriesByUser] = useState([]);
+  const [profile, setProfile] = useState(null);
+  const [stories, setStories] = useState([]);
+
   // Initialize state from localStorage
   const [token, setToken] = useState(() => localStorage.getItem("token"));
   const [user, setUser] = useState(() => {
@@ -90,12 +93,16 @@ export const BlogProvider = ({ children }) => {
     allStories,
     user,
     token,
+    profile,
+    allStoriesByUser,
+    stories,
     login,
     logout,
     navigate,
-    allStoriesByUser,
     getAllStories,
     getAllStoriesByUser,
+    setProfile,
+    setStories,
   };
 
   return <BlogContext.Provider value={value}>{children}</BlogContext.Provider>;
