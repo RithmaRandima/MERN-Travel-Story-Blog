@@ -16,7 +16,7 @@ const CallToActionSection = () => {
       {/* Background */}
       <div className="relative w-full h-full">
         <img src={background} className="w-full h-full object-cover" alt="" />
-        <div className="hidden md:block absolute inset-0 bg-gradient-to-r from-white via-white/40 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-black/50 md:from-white via-black/30 md:via-white/40 to-transparent"></div>
       </div>
 
       {/* Content */}

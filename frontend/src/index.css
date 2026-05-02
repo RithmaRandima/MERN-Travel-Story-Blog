@@ -51,6 +51,63 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+.trip-story {
+  /* line-height: 1.7; */
+  color: #374151; /* gray-700 */
+}
+
+/* Main title inside content */
+.trip-story h1 {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 5px;
+  margin-top: 50px;
+  color: #111827; /* gray-900 */
+}
+
+/* Section headings */
+.trip-story h2 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-top: 4px;
+  margin-bottom: 2px;
+  color: #1f2937;
+}
+
+/* Sub headings */
+.trip-story h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 18px;
+  margin-bottom: 10px;
+  color: #374151;
+}
+
+/* Paragraphs */
+.trip-story p {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+/* Lists */
+.trip-story ul {
+  padding-left: 20px;
+  margin-bottom: 16px;
+}
+
+.trip-story li {
+  margin-bottom: 6px;
+  list-style: disc;
+  margin: 5px 0px;
+  margin-left: 40px;
+}
+
+/* Images inside story */
+.trip-story img {
+  width: 100%;
+  border-radius: 12px;
+  margin: 20px 0;
+}
 
 @layer components {
   .input-box {

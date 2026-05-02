@@ -125,7 +125,7 @@ const FullDetailProfile = () => {
             </div>
 
             {/* about right */}
-            <div className="absolute right-4 md:-right-5 top-90 md:top-70 w-[390px]">
+            <div className="absolute right-4 md:-right-5 top-90 md:top-100 w-[390px]">
               <h1 className="font-bold text-[50px] mb-10 leading-[50px]">
                 I'm {currentUser?.firstName} <br /> {currentUser?.lastName}
               </h1>

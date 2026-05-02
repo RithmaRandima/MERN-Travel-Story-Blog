@@ -19,6 +19,8 @@ const ProfilePage = () => {
   const { id } = useParams();
   const isOwnProfile = !id;
 
+  console.log(isOwnProfile);
+
   const categories = [
     "Beach",
     "City",
@@ -40,12 +42,12 @@ const ProfilePage = () => {
             `/api/user/get-users-by-id/${id}`,
           );
 
-          // const storyRes = await axiosInstance.get(
-          //   `/api/story/get-stories-by-author/${id}`,
-          // );
+          const storyRes = await axiosInstance.get(
+            `/api/story/get-stories-by-author/${id}`,
+          );
 
           setProfile(userRes?.data?.user || null);
-          // setStories(storyRes?.data?.stories || []);
+          setStories(storyRes?.data?.stories || []);
         } catch (err) {
           console.log("Error fetching profile:", err);
         }
@@ -103,7 +105,7 @@ const ProfilePage = () => {
               />
             </div>
 
-            <div className="hidden md:block absolute right-60 bottom-[-150px] w-32 h-32 lg:w-50 lg:h-50 rounded-full shadow-lg">
+            <div className="hidden md:block absolute right-60 bottom-[-125px] w-32 h-32 lg:w-45 lg:h-45 rounded-full shadow-lg">
               <img
                 src={`http://localhost:5000/images/${profile?.coverPic}`}
                 className="w-full h-full rounded-full object-cover"

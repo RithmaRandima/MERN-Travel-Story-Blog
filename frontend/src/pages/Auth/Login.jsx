@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import PasswordInput from "../../components/PasswordInput";
 import validator from "validator";
 import axiosInstance from "../../utils/axiosinstance";

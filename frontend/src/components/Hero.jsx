@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import img1 from "../assets/hero-bg-1.jpg";
 import img2 from "../assets/hero-bg-2.jpg";
+import img3 from "../assets/hero-bg-3.jpg";
+import img4 from "../assets/hero-bg-4.jpg";
 
 const slides = [
   {
@@ -10,18 +12,18 @@ const slides = [
   },
   {
     title: "Find Your Next Adventure",
-    desc: "Plan trips and تجربة unforgettable journeys",
+    desc: "Plan trips and experience unforgettable journeys",
     img: img2,
   },
   {
     title: "Share Your Travel Stories",
     desc: "Inspire others with your experiences around the globe",
-    img: "https://images.unsplash.com/photo-1493558103817-58b2924bce98",
+    img: img3,
   },
   {
     title: "Discover Hidden Places",
     desc: "Go beyond tourist spots and explore like a local",
-    img: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
+    img: img4,
   },
 ];
 

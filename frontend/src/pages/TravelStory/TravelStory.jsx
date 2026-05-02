@@ -45,7 +45,7 @@ const TravelStory = () => {
       }
     };
     fetchStoryByID();
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0);
   }, [id]);
 
   // Fetch Comments By ID
@@ -172,23 +172,23 @@ const TravelStory = () => {
 
           <div className="mt-10 grid grid-cols-2 gap-10 w-[70%]">
             <TipBox
-              value={`${story.distance} km`}
-              logo={<GiPathDistance className="text-[70px]" />}
+              value={`${story.distance}`}
+              logo={<GiPathDistance className="text-[55px]" />}
               topic="DISTANCE"
             />
             <TipBox
-              value={`${story.elevationGain} m`}
-              logo={<GiHiking className="text-[70px]" />}
+              value={`${story.elevationGain}`}
+              logo={<GiHiking className="text-[55px]" />}
               topic="ELEVATION"
             />
             <TipBox
               value={story.estimatedTime}
-              logo={<BsFillStopwatchFill className="text-[60px]" />}
+              logo={<BsFillStopwatchFill className="text-[50px]" />}
               topic="TIME"
             />
             <TipBox
               value={story.difficultyStatus}
-              logo={<FaPersonRunning className="text-[65px]" />}
+              logo={<FaPersonRunning className="text-[50px]" />}
               topic="DIFFICULTY"
             />
           </div>
@@ -196,7 +196,7 @@ const TravelStory = () => {
 
         {/* STORY */}
         <div
-          className="mt-12 w-[70%] mx-auto"
+          className="mt-5 w-[70%] mx-auto trip-story"
           dangerouslySetInnerHTML={{ __html: story.story }}
         ></div>
 
@@ -384,8 +384,8 @@ const TipBox = ({ topic, value, logo }) => {
     <div className="flex items-center gap-4  my-5">
       {logo}
       <div>
-        <p className="text-[17px] text-gray-500">{topic}</p>
-        <p className="font-bold text-[25px]">{value}</p>
+        <p className="text-[14px] tracking-wide text-gray-500">{topic}</p>
+        <p className="font-bold text-[20px] capitalize">{value}</p>
       </div>
     </div>
   );
