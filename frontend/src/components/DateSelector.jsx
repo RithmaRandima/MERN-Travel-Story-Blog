@@ -43,7 +43,7 @@ const DateSelector = ({ date, setDate }) => {
             animate={{ opacity: 1, y: 5 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.25 }}
-            className="absolute top-full right-0 mt-2 w-[350px] bg-red-300 rounded-lg shadow-lg z-50"
+            className="absolute top-full right-9 md:right-0 mt-2 w-[300px] md:w-[350px] rounded-lg shadow-lg z-50"
           >
             <DayPicker
               className="custom-daypicker p-5 bg-white shadow rounded-lg w-full"

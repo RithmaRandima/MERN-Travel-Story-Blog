@@ -280,7 +280,7 @@ const Register = () => {
           </div>
 
           {/* gallery section */}
-          <div className="w-[100%] mt-8 mb-10 bg-red400">
+          <div className="w-[100%] mt-8 mb-10">
             <label className="text-[20px] font-bold">Gallery</label>
             <div className="grid grid-cols-3 gap-2 h-fit mt-3">
               {/* box-1 */}

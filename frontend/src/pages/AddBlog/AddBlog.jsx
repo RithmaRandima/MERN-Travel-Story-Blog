@@ -149,21 +149,51 @@ const AddBlog = ({ setShowAddBlog }) => {
     }
   }, []);
 
+  // ✅ Lock background scroll safely
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+
+    const handleEsc = (e) => {
+      if (e.key === "Escape") setShowAddBlog(false);
+    };
+
+    window.addEventListener("keydown", handleEsc);
+
+    return () => {
+      document.body.style.overflow = "auto";
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, []);
+
   return (
-    <div className="absolute z-300 top-15 bottom-0  w-full min-h-screen  bg-black/90">
-      {/* go back Button */}
-      <div className="scrollbar-hide bg-white h-full w-[50%] float-end overflow-y-scroll pb-7">
+    <div
+      className="fixed inset-0 z-50 bg-black/90 flex justify-end"
+      role="dialog"
+      aria-modal="true"
+      onClick={() => setShowAddBlog(false)}
+    >
+      {/* Drawer */}
+      <div
+        className="
+          bg-white h-full overflow-y-auto pb-7
+          w-full sm:w-[80%] md:w-[60%] lg:w-[50%]
+          transform transition-transform duration-300 ease-in-out
+        "
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* CLOSE BUTTON */}
+        <button
+          onClick={() => setShowAddBlog(false)}
+          className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white shadow-lg hover:bg-red-100 hover:scale-110 transition"
+        >
+          <FaXmark className="text-gray-700 text-[20px]" />
+        </button>
+
         <h1 className="text-right font-bold text-[25px] py-6 pr-6 mt-7">
           Tell Your{" "}
           <span className="text-sky-500 font-extrabold text-[30px]">Story</span>
         </h1>
 
-        <button
-          onClick={() => setShowAddBlog(false)}
-          className="absolute  top-4 right-4 p-2 rounded-full bg-white shadow-lg hover:bg-red-100 hover:scale-110 transition-all duration-200"
-        >
-          <FaXmark className="text-gray-700 text-[20px]" />
-        </button>
         <form onSubmit={handleAddStory} className="">
           {/* main Image section */}
           <div className="">
@@ -418,7 +448,7 @@ const AddBlog = ({ setShowAddBlog }) => {
               </div>
 
               {/* Tips Section */}
-              <div className="w-[60%] flex flex-col items-center -mt-2">
+              <div className="w-[100%] md:w-[60%] flex flex-col items-center -mt-2">
                 {/* top */}
                 <div className="flex  gap-5">
                   {/* Duration  */}
